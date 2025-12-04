@@ -79,6 +79,8 @@ You MUST complete each phase before proceeding to the next.
 
 **WHEN system has multiple components (CI → build → signing, API → service → database):**
 
+**For log-heavy investigations:** When errors appear in application logs, use the `reading-logs` skill for efficient analysis. Never load entire log files into context - use targeted grep and filtering.
+
 **BEFORE proposing fixes, add diagnostic instrumentation:**
 
 ```
@@ -386,6 +388,7 @@ If systematic investigation reveals issue is truly environmental, timing-depende
 - `writing-tests` - For creating failing test case in Phase 4
 - `condition-based-waiting` - Replace arbitrary timeouts identified in Phase 2
 - `verification-before-completion` - Verify fix worked before claiming success
+- `reading-logs` - Efficient log analysis for evidence gathering in Phases 1-2
 
 ## Real-World Impact
 

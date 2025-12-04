@@ -98,6 +98,29 @@ Wait for all parallel tasks to complete. Mark completed in TodoWrite. Proceed to
 - Expected report format
 - Plan file reference for context
 
+### Common Mistakes
+
+**Too broad:** "Fix all the tests" - agent gets lost trying to tackle everything at once.
+Better: "Fix agent-tool-abort.test.ts" - focused scope the agent can actually handle.
+
+**No context:** "Fix the race condition" - agent doesn't know where to look.
+Better: Paste the error messages and test names so the agent has something concrete to work with.
+
+**No constraints:** Agent might refactor your entire codebase when you just wanted a small fix.
+Better: "Do NOT change production code" or "Fix tests only" - explicit boundaries.
+
+**Vague output:** "Fix it" - you have no idea what actually changed.
+Better: "Return summary of root cause and changes" - structured report you can verify.
+
+### When NOT to Parallelize
+
+Not every multi-task situation benefits from parallel agents:
+
+- **Related failures:** If fixing one problem might fix others, investigate together first
+- **Exploratory debugging:** You don't know what's broken yet - need to understand the system
+- **Shared state:** Agents would interfere (editing same files, using same resources)
+- **Need full context:** Understanding requires seeing the entire system, not isolated pieces
+
 ## Auto-Recovery
 
 When a subagent reports failure, classify and respond:
@@ -199,4 +222,3 @@ Task tool (ce:code-reviewer):
 **Complementary:**
 - `writing-tests` for TDD during task execution
 - `verification-before-completion` for final verification patterns
-- `dispatching-parallel-agents` for parallel dispatch patterns

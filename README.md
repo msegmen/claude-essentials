@@ -6,9 +6,9 @@ A unified development plugin for Claude Code with essential commands, skills, an
 
 This is a single, comprehensive plugin (`ce`) that provides:
 
-- **10 Commands** - Quick workflows accessible as `/ce:test`, `/ce:explain`, `/ce:commit`, etc.
-- **13 Skills** - Reusable development patterns accessed via `ce:writing-tests`, `ce:systematic-debugging`, etc.
-- **3 Agents** - Expert AI personas invoked as `@ce:architect`, `@ce:code-reviewer`, `@ce:documentation-writer`
+- **11 Commands** - Quick workflows accessible as `/ce:test`, `/ce:explain`, `/ce:commit`, etc.
+- **14 Skills** - Reusable development patterns accessed via `ce:writing-tests`, `ce:systematic-debugging`, etc.
+- **5 Agents** - Expert AI personas invoked as `@ce:architect`, `@ce:code-reviewer`, `@ce:complex-doc-writer`
 - **Session Hooks** - Automatic project configuration on startup
 - **Reference Templates** - ADR, PRD, and technical design templates
 
@@ -70,6 +70,7 @@ Quick workflows for everyday development tasks, accessed with `/ce:` prefix:
 - `/ce:deps [action]` - Audit and upgrade dependencies
 - `/ce:fix-issue <number>` - Fix a GitHub issue by number
 - `/ce:pr [base]` - Create a pull request with auto-generated description
+- `/ce:document <target>` - Create or improve documentation (routes to appropriate agent)
 
 ### Skills
 
@@ -82,6 +83,7 @@ Reusable development patterns, accessed with `ce:` prefix:
 **Debugging & Problem Solving:**
 - `ce:systematic-debugging` - Four-phase debugging framework
 - `ce:condition-based-waiting` - Replace race conditions with polling
+- `ce:reading-logs` - Efficient log analysis using targeted search and filtering
 
 **Code Quality:**
 - `ce:refactoring-code` - Behavior-preserving code improvements
@@ -93,9 +95,11 @@ Reusable development patterns, accessed with `ce:` prefix:
 - `ce:writing-plans` - Create detailed implementation plans
 - `ce:executing-plans` - Execute plans in controlled batches
 
+**Documentation:**
+- `ce:documenting-systems` - Best practices for writing markdown documentation
+- `ce:documenting-code-comments` - Standards for self-documenting code and inline comments
+
 **Meta Skills:**
-- `ce:creating-claude-skills` - Best practices for authoring skills
-- `ce:dispatching-parallel-agents` - Investigate independent problems concurrently
 - `ce:visualizing-with-mermaid` - Create professional technical diagrams
 
 ### Agents
@@ -104,7 +108,9 @@ Expert AI personas for complex work, accessed with `@ce:` prefix:
 
 - `@ce:architect` - System design and architectural planning with diagrams
 - `@ce:code-reviewer` - Comprehensive PR/MR reviews enforcing standards
-- `@ce:documentation-writer` - Clear, practical documentation
+- `@ce:complex-doc-writer` - Multi-file markdown documentation and architecture docs
+- `@ce:code-commenter` - Single-file code comment auditing and cleanup
+- `@ce:log-reader` - Efficient log file analysis using targeted search
 
 ### Reference Templates
 
@@ -233,9 +239,9 @@ This will be accessible as `@ce:my-agent`.
     └── ce/
         ├── .claude-plugin/
         │   └── plugin.json       # Plugin metadata
-        ├── commands/             # 10 commands (/ce:test, /ce:explain, etc.)
-        ├── skills/               # 13 skills (ce:writing-tests, etc.)
-        ├── agents/               # 3 agents (@ce:architect, etc.)
+        ├── commands/             # 11 commands (/ce:test, /ce:explain, etc.)
+        ├── skills/               # 14 skills (ce:writing-tests, etc.)
+        ├── agents/               # 5 agents (@ce:architect, etc.)
         ├── hooks/                # Session automation
         └── references/           # Document templates (ADR, PRD, Technical Design)
 ```
