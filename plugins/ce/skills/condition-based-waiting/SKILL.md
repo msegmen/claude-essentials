@@ -83,6 +83,7 @@ async function waitFor<T>(
 ```
 
 **Common use cases:**
+
 - `waitFor(() => events.find(e => e.type === 'DONE'), 'done event')`
 - `waitFor(() => machine.state === 'ready', 'ready state')`
 - `waitFor(() => items.length >= 5, '5+ items')`
@@ -93,7 +94,7 @@ See @example.ts for complete implementation with domain-specific helpers.
 ## Common Mistakes
 
 **❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU
-**✅ Fix:** Poll every 10ms
+**✅ Fix:** Poll every 50ms
 
 **❌ No timeout:** Loop forever if condition never met
 **✅ Fix:** Always include timeout with clear error
@@ -115,12 +116,3 @@ await new Promise((r) => setTimeout(r, 200)); // Then: wait for timed behavior
 1. First wait for triggering condition
 2. Based on known timing (not guessing)
 3. Comment explaining WHY
-
-## Real-World Impact
-
-From debugging session (2025-10-03):
-
-- Fixed 15 flaky tests across 3 files
-- Pass rate: 60% → 100%
-- Execution time: 40% faster
-- No more race conditions

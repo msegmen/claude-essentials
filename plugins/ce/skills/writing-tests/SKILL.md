@@ -8,9 +8,12 @@ description: Write behavior-focused tests following Testing Trophy model with re
 **Core Philosophy:** Test user-observable behavior with real dependencies. Tests should survive refactoring when behavior is unchanged.
 
 **Iron Laws:**
+
+<IMPORTANT>
 1. Test real behavior, not mock behavior
 2. Never add test-only methods to production code
 3. Never mock without understanding dependencies
+</IMPORTANT>
 
 ## Testing Trophy Model
 
@@ -26,7 +29,7 @@ Write tests in this priority order:
 
 BEFORE writing any tests:
 
-1. **Review project standards** - Check `.cursor/rules/*`, testing docs, or `*test*.md` files
+1. **Review project standards** - Check existing test files, testing docs, or project conventions
 2. **Understand behavior** - What should this do? What can go wrong?
 3. **Choose test type** - Integration (default), E2E (critical workflows), or Unit (pure functions)
 4. **Identify dependencies** - What needs to be real vs mocked?
@@ -35,7 +38,7 @@ BEFORE writing any tests:
 
 ```
 Is this a complete user workflow?
-  → YES: E2E test (Playwright/Cypress)
+  → YES: E2E test
 
 Is this a pure function (no side effects/dependencies)?
   → YES: Unit test
@@ -50,21 +53,20 @@ Everything else:
 
 ### Only Mock These
 
-- External APIs (fetch, HTTP requests)
-- Timers (setTimeout, setInterval, Date.now)
-- Randomness (Math.random, crypto)
-- File I/O
-- Browser APIs (window.location, localStorage)
-- Third-party services (payments, analytics)
+- External HTTP/API calls
+- Time-dependent operations (timers, dates)
+- Randomness (random numbers, UUIDs)
+- File system I/O
+- Third-party services (payments, analytics, email)
+- Network boundaries
 
 ### Never Mock These
 
-- State management (Redux, Zustand, Context)
-- Providers/Context
-- Child components
-- Internal modules
-- Hooks/composables
-- Routing (use memory router instead)
+- Internal modules/packages
+- Database queries (use test database)
+- Business logic
+- Data transformations
+- Your own code calling your own code
 
 **Why:** Mocking internal dependencies creates brittle tests that break during refactoring.
 
@@ -85,160 +87,143 @@ Everything else:
 
 ## Integration Test Pattern
 
-```javascript
+```
 describe("Feature Name", () => {
-  // Real state/providers, not mocks
-  const setup = (initialState = {}) => {
-    return render(<Component />, {
-      wrapper: ({ children }) => (
-        <StateProvider initialState={initialState}>{children}</StateProvider>
-      ),
-    });
-  };
+  setup(initialState)
 
-  it("should show result when user performs action", async () => {
-    setup({ items: [] });
-
-    // Semantic query (role/label/text)
-    const button = screen.getByRole("button", { name: /add item/i });
-    await userEvent.click(button);
-
-    // Assert on UI output
-    await waitFor(() => expect(screen.getByText(/item added/i)).toBeVisible());
-  });
-});
+  test("should produce expected output when action is performed", () => {
+    // Arrange: Set up preconditions
+    // Act: Perform the action being tested
+    // Assert: Verify observable output
+  })
+})
 ```
 
-## E2E Test Pattern
+**Key principles:**
 
-```javascript
-test("should complete workflow when user takes action", async ({ page }) => {
-  await page.goto("/dashboard");
+- Use real state/data, not mocks
+- Assert on outputs users/callers can observe
+- Test the behavior, not the implementation
 
-  // Given: precondition
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+For language-specific patterns, see the Language-Specific Patterns section.
 
-  // When: user action
-  await page.getByRole("button", { name: "Add Item" }).click();
+## Async Waiting Patterns
 
-  // Then: expected outcome
-  await expect(page.getByText("Item added successfully")).toBeVisible();
-});
+When tests involve async operations, avoid arbitrary timeouts:
+
+```
+// BAD: Guessing at timing
+sleep(500)
+assert result == expected
+
+// GOOD: Wait for the actual condition
+wait_for(lambda: result == expected)
 ```
 
-## Query Strategy
+**When to use condition-based waiting:**
 
-**Use semantic queries (order of preference):**
+- Tests use `sleep`, `setTimeout`, or arbitrary delays
+- Tests are flaky (pass locally, fail in CI)
+- Tests timeout when run in parallel
+- Waiting for async operations to complete
 
-1. `getByRole('button', { name: /submit/i })` - Accessibility-based
-2. `getByLabelText(/email/i)` - Form labels
-3. `getByText(/welcome/i)` - Visible text
-4. `getByPlaceholderText(/search/i)` - Input placeholders
+**Delegate to skill:** When you encounter these patterns, invoke `Skill(skill="ce:condition-based-waiting")` for detailed guidance on implementing proper condition polling and fixing flaky tests.
 
-**Avoid:**
+## Assertion Strategy
 
-- `getByTestId` - Implementation detail
-- CSS selectors - Brittle, breaks during refactoring
-- Internal state queries - Not user-observable
+**Principle:** Assert on observable outputs, not internal state.
 
-## String Management
+| Context | Assert On                                             | Avoid                                 |
+| ------- | ----------------------------------------------------- | ------------------------------------- |
+| UI      | Visible text, accessibility roles, user-visible state | CSS classes, internal state, test IDs |
+| API     | Response body, status code, headers                   | Internal DB state directly            |
+| CLI     | stdout/stderr, exit code                              | Internal variables                    |
+| Library | Return values, documented side effects                | Private methods, internal state       |
 
-**Use source constants, not hard-coded strings:**
+**Why:** Tests that assert on implementation details break when you refactor, even if behavior is unchanged.
 
-```javascript
-// Good - References actual constant
-import { MESSAGES } from "@/constants/messages";
-expect(screen.getByText(MESSAGES.SUCCESS)).toBeVisible();
+## Test Data Management
+
+**Use source constants and fixtures, not hard-coded values:**
+
+```
+// Good - References actual constant or fixture
+expected_message = APP_MESSAGES.SUCCESS
+assert response.message == expected_message
 
 // Bad - Hard-coded, breaks when copy changes
-expect(screen.getByText("Action completed successfully!")).toBeVisible();
+assert response.message == "Action completed successfully!"
 ```
+
+**Why:** When product copy changes, you want one place to update, not every test file.
 
 ## Anti-Patterns to Avoid
 
 ### Testing Mock Behavior
 
-```typescript
-// BAD: Testing mock existence, not real behavior
-test('renders sidebar', () => {
-  render(<Page />);
-  expect(screen.getByTestId('sidebar-mock')).toBeInTheDocument();
-});
+```
+// BAD: Testing that the mock was called, not real behavior
+mock_service.assert_called_once()
 
-// GOOD: Test real component with semantic query
-test('renders sidebar', () => {
-  render(<Page />);  // Don't mock sidebar
-  expect(screen.getByRole('navigation')).toBeInTheDocument();
-});
+// GOOD: Test the actual outcome
+assert user.is_active == True
+assert len(sent_emails) == 1
 ```
 
-**Gate:** Before asserting on mock elements, ask "Am I testing real behavior or mock existence?" If testing mocks → Stop, delete assertion or unmock.
+**Gate:** Before asserting on mock calls, ask "Am I testing real behavior or mock interactions?" If testing mocks → Stop, test the actual outcome instead.
 
 ### Test-Only Methods in Production
 
-```typescript
-// BAD: destroy() only used in tests - pollutes production class
-class Session {
-  async destroy() {
-    await this._workspaceManager?.destroyWorkspace(this.id);
-  }
-}
-
-afterEach(() => session.destroy());
+```
+// BAD: destroy() only used in tests - pollutes production code
+class Session:
+    def destroy(self):  # Only exists for test cleanup
+        ...
 
 // GOOD: Test utilities handle cleanup
-// In test-utils/cleanupSession.ts
-export async function cleanupSession(session: Session) {
-  const workspace = session.getWorkspaceInfo();
-  if (workspace) await workspaceManager.destroyWorkspace(workspace.id);
-}
-
-afterEach(() => cleanupSession(session));
+# In test_utils.py
+def cleanup_session(session):
+    # Access internals here, not in production code
+    ...
 ```
 
-**Gate:** Before adding methods to production classes, ask "Is this only for tests?" Yes → Put in test utilities.
+**Gate:** Before adding methods to production code, ask "Is this only for tests?" Yes → Put in test utilities.
 
 ### Mocking Without Understanding
 
-```typescript
-// BAD: Mock prevents side effect test depends on
-test('detects duplicate server', () => {
-  vi.mock('ToolCatalog', () => ({
-    discoverAndCacheTools: vi.fn().mockResolvedValue(undefined)
-  }));
+```
+// BAD: Mock prevents side effect test actually needs
+mock(database.save)  # Now duplicate detection won't work!
 
-  await addServer(config);
-  await addServer(config);  // Should detect duplicate, won't!
-});
+add_item(item)
+add_item(item)  # Should fail as duplicate, but won't
 
-// GOOD: Mock at correct level, preserve needed behavior
-test('detects duplicate server', () => {
-  vi.mock('MCPServerManager'); // Mock slow startup only
+// GOOD: Mock at correct level
+mock(external_api.validate)  # Mock slow external call only
 
-  await addServer(config);  // Config written
-  await addServer(config);  // Duplicate detected
-});
+add_item(item)  # DB save works, duplicate detected
+add_item(item)  # Fails correctly
 ```
 
 ### Incomplete Mocks
 
-```typescript
+```
 // BAD: Partial mock - missing fields downstream code needs
-const mockResponse = {
-  status: 'success',
-  data: { userId: '123', name: 'Alice' }
-  // Missing: metadata.requestId that downstream code uses
-};
+mock_response = {
+    status: "success",
+    data: {...}
+    // Missing: metadata.request_id that downstream code uses
+}
 
 // GOOD: Mirror real API completely
-const mockResponse = {
-  status: 'success',
-  data: { userId: '123', name: 'Alice' },
-  metadata: { requestId: 'req-789', timestamp: 1234567890 }
-};
+mock_response = {
+    status: "success",
+    data: {...},
+    metadata: {request_id: "...", timestamp: ...}
+}
 ```
 
-**Gate:** Before creating mocks, check "What fields does real API return?" Include ALL fields, not just what your test uses.
+**Gate:** Before creating mocks, check "What does the real thing return?" Include ALL fields.
 
 ## TDD Prevents Anti-Patterns
 
@@ -249,47 +234,56 @@ const mockResponse = {
 
 **If testing mock behavior, you violated TDD** - you added mocks without watching test fail against real code.
 
+## Language-Specific Patterns
+
+For detailed framework and language-specific patterns:
+
+- **JavaScript/React**: See `{baseDir}/references/javascript-react.md` for React Testing Library queries, Jest/Vitest setup, Playwright E2E, and component testing patterns
+- **Python**: See `{baseDir}/references/python.md` for pytest fixtures, polyfactory, respx mocking, testcontainers, and FastAPI testing
+- **Go**: See `{baseDir}/references/go.md` for table-driven tests, testify/go-cmp assertions, testcontainers-go, and interface fakes
+
 ## Quality Checklist
 
 Before completing tests, verify:
 
 - [ ] Happy path covered
 - [ ] Error conditions handled
-- [ ] Loading states tested
-- [ ] User interactions simulated realistically
-- [ ] Accessibility queries used (role, label, text)
+- [ ] Edge cases considered
 - [ ] Real dependencies used (minimal mocking)
-- [ ] Condition-based waiting used (see `condition-based-waiting` skill)
+- [ ] Async waiting uses conditions, not arbitrary timeouts
 - [ ] Tests survive refactoring (no implementation details)
 - [ ] No test-only methods added to production code
-- [ ] No assertions on mock existence
+- [ ] No assertions on mock existence or call counts
+- [ ] Test names describe behavior, not implementation
 
 ## What NOT to Test
 
 - Internal state
-- Component props
+- Private methods
 - Function call counts
-- CSS classes
-- Test IDs
 - Implementation details
 - Mock existence
+- Framework internals
 
-**Test behavior users see, not code structure.**
+**Test behavior users/callers observe, not code structure.**
 
 ## Quick Reference
 
-| Test Type   | When                | Dependencies | Tools      |
-| ----------- | ------------------- | ------------ | ---------- |
-| Integration | Default             | Real         | Jest + RTL |
-| E2E         | Critical workflows  | Real         | Playwright |
-| Unit        | Pure functions only | None         | Jest       |
+| Test Type   | When                    | Dependencies                 |
+| ----------- | ----------------------- | ---------------------------- |
+| Integration | Default choice          | Real (test DB, real modules) |
+| E2E         | Critical user workflows | Real (full stack)            |
+| Unit        | Pure functions only     | None                         |
 
-| Anti-Pattern | Fix |
-|--------------|-----|
-| Testing mock existence | Test real component or unmock |
-| Test-only methods in production | Move to test utilities |
-| Mocking without understanding | Understand dependencies, mock minimally |
-| Incomplete mocks | Mirror real API completely with all fields |
-| Tests as afterthought | TDD - write tests first |
+| Anti-Pattern                    | Fix                                     |
+| ------------------------------- | --------------------------------------- |
+| Testing mock existence          | Test actual outcome instead             |
+| Test-only methods in production | Move to test utilities                  |
+| Mocking without understanding   | Understand dependencies, mock minimally |
+| Incomplete mocks                | Mirror real API completely              |
+| Tests as afterthought           | TDD - write tests first                 |
+| Arbitrary timeouts/sleeps       | Use condition-based waiting             |
 
-**Remember:** Behavior over implementation. Real over mocked. Semantic over structural.
+<IMPORTANT>
+**Remember:** Behavior over implementation. Real over mocked. Outputs over internals.
+</IMPORTANT>
