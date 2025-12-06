@@ -79,12 +79,10 @@ Expert AI personas for complex work, accessed with `@ce:` prefix:
 
 | Agent                                                             | Description                                             |
 | ----------------------------------------------------------------- | ------------------------------------------------------- |
-| [@ce:architect](plugins/ce/agents/architect.md)                   | System design and architectural planning with diagrams  |
-| [@ce:code-reviewer](plugins/ce/agents/code-reviewer.md)           | Comprehensive PR/MR reviews enforcing standards         |
-| [@ce:code-commenter](plugins/ce/agents/code-commenter.md)         | Single-file code comment auditing and cleanup           |
-| [@ce:complex-doc-writer](plugins/ce/agents/complex-doc-writer.md) | Multi-file markdown documentation and architecture docs |
-| [@ce:easy](plugins/ce/agents/easy.md)                             | Lightweight Haiku agent for simple delegated tasks      |
-| [@ce:log-reader](plugins/ce/agents/log-reader.md)                 | Efficient log file analysis using targeted search       |
+| [@ce:architect](plugins/ce/agents/architect.md)         | System design and architectural planning with diagrams |
+| [@ce:code-reviewer](plugins/ce/agents/code-reviewer.md) | Comprehensive PR/MR reviews enforcing standards        |
+| [@ce:easy](plugins/ce/agents/easy.md)                   | Lightweight Haiku agent for simple delegated tasks     |
+| [@ce:log-reader](plugins/ce/agents/log-reader.md)       | Efficient log file analysis using targeted search      |
 
 ### Reference Templates
 

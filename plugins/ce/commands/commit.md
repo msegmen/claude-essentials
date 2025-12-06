@@ -1,5 +1,6 @@
 ---
 description: Create a well-formatted git commit for current changes
+argument-hint: "[context]"
 allowed-tools: Task
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: easy
-description: Lightweight agent for straightforward tasks. Executes simple, well-defined operations with clear instructions passed by the calling command. Uses Haiku for fast, cost-effective execution.
-tools: Bash, Read, Grep, Glob, BashOutput
+description: Lightweight Haiku agent for delegated tasks. Receives detailed instructions from commands like /ce:commit, /ce:test, and /ce:pr. Not typically invoked directly by users.
+tools: Bash, Read, Edit, Write, Grep, Glob, BashOutput
 model: claude-haiku-4-5
 color: gray
 ---
