@@ -26,10 +26,11 @@ Before diving in, understand what you're looking for:
 Invoke the reading-logs skill for detailed techniques and patterns:
 
 ```
-Skill(command="ce:reading-logs")
+Skill(skill="ce:reading-logs")
 ```
 
 This provides:
+
 - Core principles (filter first, iterative narrowing)
 - Tool strategies (Grep, Bash, Read patterns)
 - Investigation workflows for different scenarios

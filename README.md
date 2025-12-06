@@ -96,8 +96,8 @@ Expert AI personas for complex work, accessed with `@ce:` prefix:
 
 ### Hooks
 
-- **Session startup** - Loads user instructions and project context automatically
-- **Notifications** - Cross-platform alerts when Claude needs input (macOS + Linux)
+- **Prompt submission** - Enforces skill evaluation before implementation to ensure relevant skills are activated
+- **Notifications** - Cross-platform alerts when Claude needs input, with git branch info (macOS + Linux)
 
 ---
 

@@ -214,7 +214,7 @@ Use for structured data with 3+ attributes. Keep tables scannable.
 
 ### Diagrams
 
-Use Mermaid skill `Skill(command="ce:visualizing-with-mermaid")` for flows:
+Use Mermaid skill `Skill(skill="ce:visualizing-with-mermaid")` for flows:
 
 ```mermaid
 sequenceDiagram

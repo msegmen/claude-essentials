@@ -15,14 +15,14 @@ Audit and improve inline documentation within individual files. Focus on making 
 Load the code comment skill before starting any work:
 
 ```
-Skill(command="ce:documenting-code-comments")
+Skill(skill="ce:documenting-code-comments")
 ```
 
 The skill provides complete guidelines for when to write/remove comments, formatting standards, and audit checklists. This agent focuses on single-file workflow execution.
 
 ## Workflow
 
-1. **Load skill**: Run `Skill(command="ce:documenting-code-comments")` for standards
+1. **Load skill**: Run `Skill(skill="ce:documenting-code-comments")` for standards
 2. **Read file**: Read target file completely, identify language and patterns
 3. **Audit comments**: Use skill's audit checklist to categorize each comment
 4. **Apply fixes**: Remove unnecessary, rewrite unclear, suggest refactors

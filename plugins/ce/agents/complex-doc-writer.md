@@ -15,7 +15,7 @@ Create high-quality technical documentation that requires deep understanding of 
 Load the markdown documenting systems skill before starting any work:
 
 ```
-Skill(command="ce:documenting-systems")
+Skill(skill="ce:documenting-systems")
 ```
 
 The skill provides complete styleguides, templates, quality checklists, and anti-patterns. This agent focuses on orchestrating multi-file documentation workflows.
@@ -39,7 +39,7 @@ The skill provides complete styleguides, templates, quality checklists, and anti
 
 1. **Deep analysis**: Read core modules, trace dependencies, identify design decisions
 2. **Document decisions**: Focus on WHY, not just WHAT
-3. **Add diagrams**: Use `Skill(command="ce:visualizing-with-mermaid")` for flows
+3. **Add diagrams**: Use `Skill(skill="ce:visualizing-with-mermaid")` for flows
 4. **Write**: Create docs in `/docs/architecture/`
 
 ## Documentation Location Standards
