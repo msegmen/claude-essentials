@@ -67,7 +67,7 @@
         "./agents/architect.md",
         "./agents/code-reviewer.md",
         "./agents/log-reader.md",
-        "./agents/easy.md"
+        "./agents/haiku.md"
       ],
       "hooks": "./hooks/hooks.json"
     }

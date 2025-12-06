@@ -14,7 +14,7 @@ Arguments:
 
 Analyze the arguments and context to determine which instructions to pass:
 
-**Use CODE COMMENT instructions (delegate to `@ce:easy`):**
+**Use CODE COMMENT instructions (delegate to `@ce:haiku`):**
 
 - Single source code file path provided (`.ts`, `.js`, `.py`, `.go`, `.rs`, etc.)
 - Request mentions "comments", "inline docs", or "code comments"
@@ -35,13 +35,13 @@ Analyze the arguments and context to determine which instructions to pass:
    - If file path provided, check extension and file type
    - If no path, analyze the request description
 3. **Route appropriately**:
-   - Delegate to `@ce:easy` with code comment instructions for single-file work
+   - Delegate to `@ce:haiku` with code comment instructions for single-file work
    - Spawn a general subagent with documentation instructions for complex work
 4. **If ambiguous**: Ask user to clarify scope before proceeding
 
 ## Code Comment Instructions
 
-Pass these instructions to `@ce:easy` for single-file code comment work:
+Pass these instructions to `@ce:haiku` for single-file code comment work:
 
 <prompt_instructions>
 You are auditing and improving inline documentation within source code files.
@@ -104,9 +104,9 @@ LOCATION STANDARDS:
 
 | Input                                                  | Routes To     |
 | ------------------------------------------------------ | ------------- |
-| `/document src/utils/auth.ts`                          | @ce:easy      |
-| `/document clean up code comments in unstaged changes` | @ce:easy      |
+| `/document src/utils/auth.ts`                          | @ce:haiku     |
+| `/document clean up code comments in unstaged changes` | @ce:haiku     |
 | `/document README`                                     | general agent |
 | `/document API docs for /users endpoint`               | general agent |
-| `/document clean up comments in parser.py`             | @ce:easy      |
+| `/document clean up comments in parser.py`             | @ce:haiku     |
 | `/document architecture overview`                      | general agent |

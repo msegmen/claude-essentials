@@ -77,11 +77,11 @@ Reusable development patterns, accessed with `ce:` prefix:
 
 Expert AI personas for complex work, accessed with `@ce:` prefix:
 
-| Agent                                                             | Description                                             |
-| ----------------------------------------------------------------- | ------------------------------------------------------- |
+| Agent                                                   | Description                                            |
+| ------------------------------------------------------- | ------------------------------------------------------ |
 | [@ce:architect](plugins/ce/agents/architect.md)         | System design and architectural planning with diagrams |
 | [@ce:code-reviewer](plugins/ce/agents/code-reviewer.md) | Comprehensive PR/MR reviews enforcing standards        |
-| [@ce:easy](plugins/ce/agents/easy.md)                   | Lightweight Haiku agent for simple delegated tasks     |
+| [@ce:haiku](plugins/ce/agents/haiku.md)                 | Lightweight Haiku agent for simple delegated tasks     |
 | [@ce:log-reader](plugins/ce/agents/log-reader.md)       | Efficient log file analysis using targeted search      |
 
 ### Reference Templates
@@ -257,7 +257,7 @@ This will be accessible as `@ce:my-agent`.
         │   └── plugin.json       # Plugin metadata
         ├── commands/             # 12 commands (/ce:test, /ce:plan, etc.)
         ├── skills/               # 14 skills (ce:writing-tests, etc.)
-        ├── agents/               # 6 agents (@ce:architect, @ce:easy, etc.)
+        ├── agents/               # 6 agents (@ce:architect, @ce:haiku, etc.)
         ├── hooks/                # Session automation
         └── references/           # Document templates (ADR, PRD, Technical Design)
 ```

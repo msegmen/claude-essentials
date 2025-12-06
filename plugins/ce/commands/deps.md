@@ -4,9 +4,9 @@ argument-hint: "[audit|upgrade|outdated]"
 allowed-tools: Task
 ---
 
-**DELEGATION ONLY**: Do NOT run any commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:easy` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
+**DELEGATION ONLY**: Do NOT run any commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:haiku` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
 
-## Task Prompt for Easy Agent
+## Task Prompt for Haiku Agent
 
 ```
 Manage project dependencies.

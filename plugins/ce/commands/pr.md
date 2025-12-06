@@ -4,9 +4,9 @@ argument-hint: "[base-branch]"
 allowed-tools: Task
 ---
 
-**DELEGATION ONLY**: Do NOT run any commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:easy` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
+**DELEGATION ONLY**: Do NOT run any commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:haiku` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
 
-## Task Prompt for Easy Agent
+## Task Prompt for Haiku Agent
 
 ```
 Create a pull request for the current branch.
@@ -45,19 +45,25 @@ Generate a **Title** using conventional format:
 
 Generate a **Body** using this template:
 ```
+
 ## Summary
+
 [2-3 sentences explaining what this PR does and why]
 
 ## Changes
+
 - [Bullet list of key changes]
 
 ## Testing
+
 - [ ] Unit tests added/updated
 - [ ] Manual testing completed
 
 ## Notes
+
 [Any additional context for reviewers, or "None" if not applicable]
-```
+
+````
 
 **Step 5: Create the PR**
 Execute:
@@ -69,14 +75,19 @@ gh pr create --title "<title>" --base <base-branch> --body "$(cat <<'EOF'
 <body content here>
 EOF
 )"
-```
+````
 
 **Step 6: Report Results**
+
 - Print the PR URL returned by `gh pr create`
 - Note any warnings (e.g., draft status, failing checks visible in output)
 
 **Failure Handling**
+
 - If `gh` is not installed: Report "GitHub CLI (gh) is required. Install with: brew install gh"
 - If not authenticated: Report "Please authenticate with: gh auth login"
 - If PR creation fails: Report the error message from gh
+
+```
+
 ```

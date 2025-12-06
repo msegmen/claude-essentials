@@ -4,11 +4,11 @@ argument-hint: "[context]"
 allowed-tools: Task
 ---
 
-**DELEGATION ONLY**: Do NOT execute any git commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:easy` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
+**DELEGATION ONLY**: Do NOT execute any git commands or investigate the codebase yourself. Your only job is to immediately invoke the `ce:haiku` agent via Task tool, passing the prompt template below with `$ARGUMENTS` substituted.
 
 **Context Passing**: If you already have context about the changes from earlier in the conversation (e.g., you just helped implement or fix something), include a brief 1-3 sentence summary at the end of the prompt. Do NOT read files to gather this - only pass along what you already know. Keep it concise.
 
-## Task Prompt for Easy Agent
+## Task Prompt for Haiku Agent
 
 ```
 Create a git commit.
