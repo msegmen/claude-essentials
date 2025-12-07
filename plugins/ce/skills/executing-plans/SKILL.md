@@ -303,6 +303,8 @@ Task tool (ce:code-reviewer):
     Provide: Summary, any critical issues, recommendations
 ```
 
+Fix all issues that are identified
+
 5. **Update plan status:**
 
    - Single-file: Update `> **Status:** COMPLETED` header
