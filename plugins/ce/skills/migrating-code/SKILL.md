@@ -14,6 +14,28 @@ Apply these patterns when performing code migrations to ensure safety, reversibi
 3. **Test at every stage** - Verify behavior before, during, and after migration
 4. **Communicate changes** - Document breaking changes and migration paths for consumers
 
+Copy this checklist and track your progress:
+
+```
+Migration Progress:
+- [ ] Pre-Migration
+  - [ ] Read changelog and migration guide
+  - [ ] Identify breaking changes
+  - [ ] Check dependency compatibility
+  - [ ] Ensure test coverage
+  - [ ] Plan rollback strategy
+- [ ] During Migration
+  - [ ] Implement in small, reversible steps
+  - [ ] Test at each step
+  - [ ] Monitor error rates
+  - [ ] Have rollback ready
+- [ ] Post-Migration
+  - [ ] Verify all tests pass
+  - [ ] Check metrics match expectations
+  - [ ] Remove migration scaffolding
+  - [ ] Update documentation
+```
+
 ## Database Schema Migrations
 
 ### Safe Migration Patterns

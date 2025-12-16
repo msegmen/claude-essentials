@@ -11,6 +11,18 @@ description: Run verification commands before claiming work is complete or fixed
 
 BEFORE any claim of success, completion, or satisfaction:
 
+Copy this checklist and track your progress:
+
+```
+Verification Checklist:
+- [ ] IDENTIFY: What command proves this claim?
+- [ ] RUN: Execute the verification command (fresh, complete)
+- [ ] READ: Check full output, exit code, failure counts
+- [ ] VERIFY: Does output confirm the claim?
+  - If NO → State actual status with evidence
+  - If YES → State claim WITH evidence
+```
+
 1. **IDENTIFY** - What command proves this claim?
 2. **RUN** - Execute the full verification command (fresh, complete)
 3. **READ** - Check full output, exit code, failure counts

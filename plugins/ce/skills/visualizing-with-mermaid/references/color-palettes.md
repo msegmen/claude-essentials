@@ -2,6 +2,14 @@
 
 **Use a consistent, limited palette.** Don't use every color Mermaid offers. Choose colors based on your target environment (light mode, dark mode, or both).
 
+## Contents
+
+- [Choosing the Right Palette](#choosing-the-right-palette)
+- [Light Mode Palette](#light-mode-palette)
+- [Dark Mode Palette](#dark-mode-palette)
+- [Universal Colors](#universal-colors-work-in-both-modes)
+- [Color Usage Best Practices](#color-usage-best-practices)
+
 ## Choosing the Right Palette
 
 **Light Mode**: Use when diagrams will be viewed on white/light backgrounds (documentation, presentations, printed materials)

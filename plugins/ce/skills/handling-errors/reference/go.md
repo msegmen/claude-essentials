@@ -2,6 +2,18 @@
 
 Go-specific patterns for handling errors.
 
+## Contents
+
+- [Key Patterns](#key-patterns)
+- [Explicit Checking with Wrapping](#explicit-checking-with-wrapping)
+- [Sentinel Errors for Expected Conditions](#sentinel-errors-for-expected-conditions)
+- [Defer for Guaranteed Cleanup](#defer-for-guaranteed-cleanup)
+- [Custom Error Types](#custom-error-types)
+- [Error Wrapping Best Practices](#error-wrapping-best-practices)
+- [Multiple Return Values Pattern](#multiple-return-values-pattern)
+- [Panic and Recover](#panic-and-recover-use-sparingly)
+- [Error Group Pattern](#error-group-pattern)
+
 ## Key Patterns
 
 **Explicit error returns:** Always check returned errors - Go doesn't have exceptions.

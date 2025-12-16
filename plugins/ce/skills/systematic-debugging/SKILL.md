@@ -50,6 +50,31 @@ Use for ANY technical issue:
 
 You MUST complete each phase before proceeding to the next.
 
+Copy this checklist and track your progress:
+
+```
+Debugging Progress:
+- [ ] Phase 1: Root Cause Investigation
+  - [ ] Read error messages carefully
+  - [ ] Reproduce consistently
+  - [ ] Check recent changes
+  - [ ] Gather evidence at component boundaries
+  - [ ] Trace data flow backward to source
+- [ ] Phase 2: Pattern Analysis
+  - [ ] Find working examples
+  - [ ] Compare against references
+  - [ ] Identify differences
+- [ ] Phase 3: Hypothesis and Testing
+  - [ ] Form single hypothesis
+  - [ ] Test minimally (one change)
+  - [ ] Verify before continuing
+- [ ] Phase 4: Implementation
+  - [ ] Create failing test case
+  - [ ] Implement single fix at root cause
+  - [ ] Apply defense-in-depth
+  - [ ] Verify fix and tests pass
+```
+
 ### Phase 1: Root Cause Investigation
 
 **BEFORE attempting ANY fix:**

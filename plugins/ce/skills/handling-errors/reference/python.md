@@ -2,6 +2,14 @@
 
 Python-specific patterns for handling exceptions and errors.
 
+## Contents
+
+- [Key Patterns](#key-patterns)
+- [EAFP Pattern with Specific Exceptions](#eafp-pattern-with-specific-exceptions)
+- [Custom Exception Hierarchy](#custom-exception-hierarchy)
+- [Best Practices](#best-practices)
+- [Common Patterns](#common-patterns)
+
 ## Key Patterns
 
 **EAFP (Easier to Ask Forgiveness than Permission):** Use try-except instead of pre-checking conditions.

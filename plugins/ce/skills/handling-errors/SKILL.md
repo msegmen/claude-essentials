@@ -224,9 +224,9 @@ async function trackEvent(event: Event) {
 
 For detailed language-specific error handling patterns:
 
-- **TypeScript/React**: See `references/typescript-react.md` for Error Boundaries, typed error classes, Result pattern, UI error display patterns, and centralized error handling
-- **Python**: See `references/python.md` for EAFP pattern, custom exception hierarchies, context managers, and exception chaining
-- **Go**: See `references/go.md` for explicit error returns, error wrapping, sentinel errors, and defer patterns
+- **TypeScript/React**: See [reference/typescript-react.md](reference/typescript-react.md) for Error Boundaries, typed error classes, Result pattern, UI error display patterns, and centralized error handling
+- **Python**: See [reference/python.md](reference/python.md) for EAFP pattern, custom exception hierarchies, context managers, and exception chaining
+- **Go**: See [reference/go.md](reference/go.md) for explicit error returns, error wrapping, sentinel errors, and defer patterns
 
 ## Universal Best Practices
 

@@ -58,9 +58,9 @@ Reusable development patterns, accessed with `ce:` prefix:
 
 | Skill                                                            | Description                                               |
 | ---------------------------------------------------------------- | --------------------------------------------------------- |
-| [ce:writing-plans](plugins/ce/skills/writing-plans/SKILL.md)     | Create detailed implementation plans                      |
-| [ce:executing-plans](plugins/ce/skills/executing-plans/SKILL.md) | Execute plans in controlled batches                       |
-| [ce:architect](plugins/ce/skills/architect/SKILL.md)             | Design scalable architectures and technical documentation |
+| [ce:writing-plans](plugins/ce/skills/writing-plans/SKILL.md)                 | Create detailed implementation plans                      |
+| [ce:executing-plans](plugins/ce/skills/executing-plans/SKILL.md)             | Execute plans in controlled batches                       |
+| [ce:architecting-systems](plugins/ce/skills/architecting-systems/SKILL.md)   | Design scalable architectures and technical documentation |
 
 **Documentation:**
 
@@ -136,8 +136,8 @@ claude
 # Use a skill
 ce:writing-tests
 
-# Invoke an agent
-@ce:architect
+# Use a skill
+ce:architecting-systems
 ```
 
 ## Usage Examples
@@ -171,7 +171,7 @@ ce:optimizing-performance
 **Plan a feature:**
 
 ```bash
-@ce:architect I need to add real-time notifications. We have 10k concurrent users.
+ce:architecting-systems I need to add real-time notifications. We have 10k concurrent users.
 # Then create a plan:
 ce:writing-plans
 ```
@@ -189,7 +189,7 @@ ce:refactoring-code
 
 - **Commands** (`/ce:test`, `/ce:review`) are quick keyboard shortcuts for routine tasks
 - **Skills** (`ce:writing-tests`) are reusable workflows that guide specific development patterns
-- **Agents** (`@ce:architect`) are expert personas for complex, multi-step work
+- **Agents** (`@ce:code-reviewer`) are expert personas for complex, multi-step work
 
 Use commands for quick actions, skills for following proven patterns, and agents when you need specialized expertise.
 
@@ -258,7 +258,7 @@ This will be accessible as `@ce:my-agent`.
         │   └── plugin.json       # Plugin metadata
         ├── commands/             # 12 commands (/ce:test, /ce:plan, etc.)
         ├── skills/               # 14 skills (ce:writing-tests, etc.)
-        ├── agents/               # 6 agents (@ce:architect, @ce:haiku, etc.)
+        ├── agents/               # 3 agents (@ce:code-reviewer, @ce:haiku, etc.)
         ├── hooks/                # Session automation
         └── references/           # Document templates (ADR, PRD, Technical Design)
 ```
@@ -284,10 +284,10 @@ ce:writing-tests
 
 ```bash
 # Vague
-@ce:architect help with authentication
+ce:architecting-systems help with authentication
 
 # Better
-@ce:architect We need OAuth2 + JWT authentication for a React SPA with Node backend. 50k users.
+ce:architecting-systems We need OAuth2 + JWT authentication for a React SPA with Node backend. 50k users.
 ```
 
 **Run tests first:** Use `/ce:test` before committing to catch issues early.

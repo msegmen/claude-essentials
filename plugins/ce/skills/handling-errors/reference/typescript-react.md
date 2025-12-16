@@ -2,6 +2,14 @@
 
 Language-specific patterns for handling errors in TypeScript and React applications.
 
+## Contents
+
+- [Error Boundaries for React Components](#error-boundaries-for-react-components)
+- [Typed Error Classes](#typed-error-classes)
+- [Async Error Handling & Result Pattern](#async-error-handling--result-pattern)
+- [UI Error Display Patterns](#ui-error-display-patterns)
+- [Centralized Error Handling](#centralized-error-handling)
+
 ## Error Boundaries for React Components
 
 Error boundaries catch JavaScript errors in component trees and display fallback UI.

@@ -5,7 +5,7 @@
 !/assets/
 !/plugins/
 !/.claude-plugin/
-
+!/CLAUDE.md
 
 # And these files
 !LICENSE.md

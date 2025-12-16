@@ -22,7 +22,7 @@ If you change what the code does (not just how it does it), you're not refactori
 
 - Access to codebase for pattern research
 - **Behavior-driven tests** that verify current functionality
-- Understanding of project conventions (check `.cursor/rules/*` if available)
+- Understanding of project conventions
 
 ## Core Responsibilities
 
@@ -36,6 +36,33 @@ If you change what the code does (not just how it does it), you're not refactori
 ## The Five-Phase Refactoring Process
 
 You MUST complete each phase before proceeding to the next.
+
+Copy this checklist and track your progress:
+
+```
+Refactoring Progress:
+- [ ] Phase 1: Understand Current Behavior
+  - [ ] Read existing code thoroughly
+  - [ ] Check usage across codebase
+  - [ ] Document current behavior
+- [ ] Phase 2: Verify Test Coverage (CRITICAL)
+  - [ ] Behavior-driven tests exist and pass
+  - [ ] Tests cover main workflows and edge cases
+  - [ ] Tests don't depend on implementation details
+- [ ] Phase 3: Identify Issues
+  - [ ] Issues documented with locations
+  - [ ] Issues categorized by type and severity
+  - [ ] Root cause understood for each issue
+- [ ] Phase 4: Plan Refactoring
+  - [ ] Broken into small, verifiable steps
+  - [ ] Each step has verification criteria
+  - [ ] Dependencies between steps identified
+- [ ] Phase 5: Execute & Verify
+  - [ ] All planned changes implemented
+  - [ ] All tests pass
+  - [ ] No new type errors or warnings
+  - [ ] Behavior verified unchanged
+```
 
 ### Phase 1: Understand Current Behavior
 
@@ -234,93 +261,7 @@ If you catch yourself:
 
 ## React/TypeScript Patterns
 
-When working on TypeScript/React projects, follow these patterns:
-
-### React Components
-
-**Structure order:**
-```typescript
-export function MyComponent({ prop1, prop2 }: Props) {
-  // 1. Hooks (useState, useContext, custom hooks)
-  const [state, setState] = useState(initialValue);
-  const customData = useCustomHook();
-
-  // 2. Derived state (useMemo for expensive computations)
-  const derivedValue = useMemo(() => compute(state), [state]);
-
-  // 3. Event handlers (useCallback for stability)
-  const handleClick = useCallback(() => {
-    setState(newValue);
-  }, []);
-
-  // 4. Effects (useEffect)
-  useEffect(() => {
-    // Side effects
-  }, [dependency]);
-
-  // 5. Render
-  return <div onClick={handleClick}>{derivedValue}</div>;
-}
-```
-
-**Component refactoring patterns:**
-- Extract complex JSX into sub-components
-- Use functional components with hooks (not class components)
-- Memoize expensive operations with `useMemo`
-- Stabilize callbacks with `useCallback`
-- Extract custom hooks for shared logic
-
-**When to extract a component:**
-- JSX block is used multiple times
-- JSX block is >20 lines and has clear responsibility
-- Logic can be reused across components
-
-### TypeScript
-
-**Type safety patterns:**
-```typescript
-// ✅ Use interface for objects
-interface User {
-  id: string;
-  name: string;
-}
-
-// ✅ Use type for unions/intersections
-type Status = 'pending' | 'success' | 'error';
-type UserWithStatus = User & { status: Status };
-
-// ✅ Leverage utility types
-type PartialUser = Partial<User>;
-type UserName = Pick<User, 'name'>;
-type UserWithoutId = Omit<User, 'id'>;
-
-// ✅ Type guards for runtime checks
-function isUser(value: unknown): value is User {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    'id' in value &&
-    typeof value.id === 'string'
-  );
-}
-
-// ❌ Avoid any
-function processData(data: any) { } // Bad
-
-// ✅ Use unknown with type guards
-function processData(data: unknown) {
-  if (isUser(data)) {
-    // data is User here
-  }
-}
-```
-
-**TypeScript refactoring checklist:**
-- [ ] Replace `any` with specific types or `unknown`
-- [ ] Add type guards for runtime validation
-- [ ] Use utility types instead of manual type construction
-- [ ] Prefer `interface` for objects, `type` for unions
-- [ ] Enable strict mode if not already enabled
+For TypeScript/React projects, see [references/react-typescript.md](references/react-typescript.md) for component structure, type safety patterns, and refactoring checklists.
 
 ## Common Refactoring Patterns - Quick Reference
 

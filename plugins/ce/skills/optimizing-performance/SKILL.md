@@ -16,6 +16,28 @@ IF optimization increases complexity → 10x performance gain OR fix critical UX
 
 ## The Four-Phase Process
 
+Copy this checklist and track your progress:
+
+```
+Optimization Progress:
+- [ ] Phase 1: Measure First
+  - [ ] Baseline measured (time/renders/memory/KB)
+  - [ ] Benchmark script set up
+  - [ ] Big O complexity calculated
+  - [ ] Bottleneck location identified (file:line)
+- [ ] Phase 2: Identify Root Cause
+  - [ ] Root cause identified (algorithm/I/O/payload/blocking)
+  - [ ] Big O complexity calculated
+- [ ] Phase 3: Evaluate Cost vs Benefit
+  - [ ] Complexity impact assessed
+  - [ ] Benchmark shows Nx improvement
+  - [ ] Decision made (win-win OR 10x gain)
+- [ ] Phase 4: Implement & Verify
+  - [ ] Re-benchmark shows improvement
+  - [ ] Tests pass
+  - [ ] No regressions introduced
+```
+
 ### Phase 1: Measure First (REQUIRED)
 
 **The Iron Law:** Never optimize without data.

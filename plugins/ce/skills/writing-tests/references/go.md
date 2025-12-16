@@ -2,6 +2,16 @@
 
 Language-specific patterns for testing Go applications using the standard library, `testify`, and modern integration tools.
 
+## Contents
+
+- [The Pragmatic Assertion Strategy](#the-pragmatic-assertion-strategy)
+- [Table-Driven Tests](#table-driven-tests-the-gold-standard)
+- [Integration Testing (Testcontainers)](#integration-testing-testcontainers)
+- [Mocking Strategies](#mocking-strategies)
+- [Native Fuzzing](#native-fuzzing)
+- [HTTP Handlers with httptest](#http-handlers-with-httptest)
+- [Tooling Quick Reference](#tooling-quick-reference)
+
 ## The Pragmatic Assertion Strategy
 
 Don't be a purist. Use tools where they help, but know their limits.

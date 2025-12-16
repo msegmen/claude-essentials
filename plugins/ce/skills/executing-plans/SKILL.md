@@ -15,6 +15,20 @@ Execute plans by dispatching one agent per task. A task is a complete unit of wo
 
 ## Execution Flow
 
+Copy this checklist and track your progress:
+
+```
+Plan Execution Progress:
+- [ ] Step 1: Load the plan file
+- [ ] Step 2: Create TodoWrite with all tasks
+- [ ] Step 3: Dispatch agents for independent tasks in parallel
+- [ ] Step 4: Update plan file (mark IN_PROGRESS)
+- [ ] Step 5: Wait for completion, dispatch dependent tasks
+- [ ] Step 6: Run final verification (tests, build, lint)
+- [ ] Step 7: Dispatch code-reviewer agent
+- [ ] Step 8: Update plan status to COMPLETED
+```
+
 1. Load the plan file
 2. Create TodoWrite with all tasks
 3. Dispatch agents for independent tasks in parallel

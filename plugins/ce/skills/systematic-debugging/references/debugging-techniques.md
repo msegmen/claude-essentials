@@ -2,6 +2,16 @@
 
 Use these tactical techniques when executing the systematic debugging process to gather evidence and isolate problems.
 
+## Contents
+
+- [Binary Search / Code Bisection](#binary-search--code-bisection)
+- [Minimal Reproduction](#minimal-reproduction)
+- [Strategic Logging & Instrumentation](#strategic-logging--instrumentation)
+- [Runtime Assertions](#runtime-assertions)
+- [Differential Analysis](#differential-analysis)
+- [Multi-Component System Debugging](#multi-component-system-debugging)
+- [Backward Tracing for Deep Call Stack Errors](#backward-tracing-for-deep-call-stack-errors)
+
 ## Binary Search / Code Bisection
 
 Systematically narrow down the problem:

@@ -27,7 +27,20 @@ Write tests in this priority order:
 
 ## Pre-Test Workflow
 
-BEFORE writing any tests:
+BEFORE writing any tests, copy this checklist and track your progress:
+
+```
+Test Writing Progress:
+- [ ] Step 1: Review project standards (check existing tests)
+- [ ] Step 2: Understand behavior (what should it do? what can fail?)
+- [ ] Step 3: Choose test type (Integration/E2E/Unit)
+- [ ] Step 4: Identify dependencies (real vs mocked)
+- [ ] Step 5: Write failing test first (TDD)
+- [ ] Step 6: Implement minimal code to pass
+- [ ] Step 7: Verify coverage (happy path, errors, edge cases)
+```
+
+**Before writing any tests:**
 
 1. **Review project standards** - Check existing test files, testing docs, or project conventions
 2. **Understand behavior** - What should this do? What can go wrong?

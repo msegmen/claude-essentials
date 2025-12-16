@@ -2,6 +2,18 @@
 
 Language-specific patterns for testing Python applications with `pytest`, `httpx`, and modern architecture tools like `polyfactory` and `testcontainers`.
 
+## Contents
+
+- [Pytest Configuration](#pytest-configuration-pyprojecttoml)
+- [Pytest Fixture Pattern](#pytest-fixture-pattern)
+- [Data Generation (Polyfactory)](#data-generation-polyfactory)
+- [Mocking External Boundaries (RESPX)](#mocking-external-boundaries-respx)
+- [FastAPI Testing Patterns (Async)](#fastapi-testing-patterns-async)
+- [Integration Testing (Testcontainers)](#integration-testing-testcontainers)
+- [Table-Driven Tests (Parametrize)](#table-driven-tests-parametrize)
+- [Tooling Quick Reference](#tooling-quick-reference)
+- [Property-Based Testing (Hypothesis)](#property-based-testing-hypothesis)
+
 ## Pytest Configuration (`pyproject.toml`)
 
 Modern pytest setup uses `pyproject.toml` for configuration.

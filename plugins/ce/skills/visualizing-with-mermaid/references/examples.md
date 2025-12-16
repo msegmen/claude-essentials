@@ -2,6 +2,16 @@
 
 This file contains detailed examples of common Mermaid diagram patterns referenced from the main skill.
 
+## Contents
+
+- [Pattern 1: Three-Tier Architecture](#pattern-1-three-tier-architecture)
+- [Pattern 2: Request Flow with Error Handling](#pattern-2-request-flow-with-error-handling)
+- [Pattern 3: State Machine with Semantic Colors](#pattern-3-state-machine-with-semantic-colors)
+- [Pattern 4: Data Flow Pipeline](#pattern-4-data-flow-pipeline)
+- [Advanced Technique: Highlighting Critical Paths](#advanced-technique-highlighting-critical-paths)
+- [Using Icons and Emojis](#using-icons-and-emojis)
+- [Entity Relationship Diagram](#entity-relationship-diagram)
+
 ## Pattern 1: Three-Tier Architecture
 
 ```mermaid

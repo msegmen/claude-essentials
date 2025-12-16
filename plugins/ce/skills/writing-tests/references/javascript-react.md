@@ -2,6 +2,17 @@
 
 Language-specific patterns for testing JavaScript and React applications with Jest, Vitest, React Testing Library, and Playwright.
 
+## Contents
+
+- [Integration Test Pattern (React Testing Library)](#integration-test-pattern-react-testing-library)
+- [E2E Test Pattern (Playwright)](#e2e-test-pattern-playwright)
+- [Query Strategy](#query-strategy)
+- [String Management](#string-management)
+- [React-Specific Anti-Patterns](#react-specific-anti-patterns)
+- [Async Waiting Patterns](#async-waiting-patterns)
+- [Tooling Quick Reference](#tooling-quick-reference)
+- [Setup Patterns](#setup-patterns)
+
 ## Integration Test Pattern (React Testing Library)
 
 ```javascript
