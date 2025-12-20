@@ -31,12 +31,13 @@ Plan Execution Progress:
 
 1. Load the plan file
 2. Create TodoWrite with all tasks
-3. Dispatch agents for independent tasks in parallel
-4. **Update plan file** - Mark task checkboxes complete, update status to IN_PROGRESS
-5. Wait for completion, then dispatch dependent tasks
-6. Run final verification (tests, build, lint)
-7. Dispatch `ce:code-reviewer` for review
-8. **Update plan status** to COMPLETED when done
+3. Evaluate the skills relevant to each task
+4. Dispatch agents for independent tasks in parallel, include the skills the agent should use
+5. **Update plan file** - Mark task checkboxes complete, update status to IN_PROGRESS
+6. Wait for completion, then dispatch dependent tasks
+7. Run final verification (tests, build, lint)
+8. Dispatch `ce:code-reviewer` for review
+9. **Update plan status** to COMPLETED when done
 
 ## Task Dispatch
 
@@ -46,6 +47,7 @@ Task tool (general-purpose):
   description: "Task 1: Add auth module"
   prompt: |
     Execute Task 1 from [plan-file].
+    Use the following skills: <list skills that fit the task>
     Complete ALL steps in this task.
     Verify and commit when done.
     Report: files changed, test results
@@ -54,6 +56,7 @@ Task tool (general-purpose):
   description: "Task 2: Add billing module"
   prompt: |
     Execute Task 2 from [plan-file].
+    Use the following skills: <list skills that fit the task>
     Complete ALL steps in this task.
     Verify and commit when done.
     Report: files changed, test results
