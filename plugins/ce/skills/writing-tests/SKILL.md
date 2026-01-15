@@ -7,6 +7,10 @@ description: Writes behavior-focused tests using Testing Trophy model with real 
 
 **Core principle:** Test user-observable behavior with real dependencies. Tests should survive refactoring.
 
+> "The more your tests resemble the way your software is used, the more confidence they can give you." — Kent C. Dodds
+
+**Why this matters:** Tests exist to give you confidence. The Testing Trophy prioritizes integration tests because they test real behavior across real modules — giving maximum confidence per test written. Unit tests in isolation often just test mocks, not your actual system.
+
 ## Testing Trophy Model
 
 | Priority | Type        | When                                            |
@@ -31,6 +35,8 @@ description: Writes behavior-focused tests using Testing Trophy model with real 
 - Database queries (use test DB)
 - Business logic
 - Your own code calling your own code
+
+**Before mocking, ask:** "What side effects does this have? Does my test need those?" If unsure, run with real implementation first, then add minimal mocking only where needed.
 
 ## Test Type Decision
 
@@ -73,3 +79,7 @@ Everything else → Integration test
 - **Go**: See [references/go.md](references/go.md)
 
 For flaky tests with timing issues, use `Skill(ce:condition-based-waiting)`.
+
+---
+
+**Remember:** Behavior over implementation. Real over mocked. Outputs over internals.
