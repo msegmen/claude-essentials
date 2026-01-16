@@ -45,19 +45,23 @@ showError({
 | **Unexpected**| Null reference, DB crash          | Log error, show support ID  |
 | **Critical** | Auth down, Payment gateway offline | Circuit breaker, alert      |
 
-## Fail Fast vs Degrade Gracefully
+## Always Fail Fast
 
-**Fail fast** for critical dependencies:
-
-```typescript
-await connectToDatabase(); // Throws on failure - app can't run without it
-```
-
-**Degrade gracefully** for optional features:
+**Never use fallbacks or silent degradation. Errors must surface immediately.**
 
 ```typescript
+// ✅ Fail fast - error surfaces immediately
+await connectToDatabase(); // Throws on failure
+
+// ❌ NEVER: Silent fallback hides the problem
 const prefs = await loadPreferences(userId).catch(() => DEFAULT_PREFS);
 ```
+
+**Why fail fast:**
+- Fallbacks hide bugs until production
+- Silent failures corrupt data or state
+- Easier to debug failures caught early
+- Users prefer clear errors over mysterious broken behavior
 
 ## Log at the Right Layer
 

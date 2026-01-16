@@ -36,6 +36,47 @@ class ProfilePage extends StatelessWidget {
 }
 ```
 
+### Anti-Pattern: Extracting to Methods
+
+**Never extract widgets to methods - always use widget classes.**
+
+```dart
+// ❌ ANTI-PATTERN: Method is called on EVERY rebuild
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildHeader(),  // Called every rebuild
+        _buildBody(),    // Called every rebuild
+      ],
+    );
+  }
+
+  Widget _buildHeader() => Container(...);  // Recreated every time
+  Widget _buildBody() => Container(...);    // Recreated every time
+}
+
+// ✅ CORRECT: Widget classes are optimized by Flutter
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        _ProfileHeader(),  // Flutter can skip rebuild if unchanged
+        _ProfileBody(),    // Flutter can skip rebuild if unchanged
+      ],
+    );
+  }
+}
+```
+
+**Why methods are bad:**
+- Methods are invoked on every `build()` call, recreating widget trees
+- Flutter cannot optimize or cache method results
+- Causes unnecessary CPU cycles and potential frame drops
+- Widget classes allow Flutter's diffing algorithm to skip unchanged subtrees
+
 ### Composition Over Inheritance
 
 ```dart

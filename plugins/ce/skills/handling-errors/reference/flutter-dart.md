@@ -5,7 +5,7 @@ Dart and Flutter-specific patterns for handling errors effectively.
 ## Contents
 - [Future and Stream Errors](#future-and-stream-errors)
 - [FlutterError for Widget Errors](#fluttererror-for-widget-errors)
-- [ErrorWidget for Graceful Degradation](#errorwidget-for-graceful-degradation)
+- [Fail Fast in Flutter](#fail-fast-in-flutter)
 - [Firebase Exception Handling](#firebase-exception-handling)
 - [Result Pattern (Dart 3 Sealed Classes)](#result-pattern-dart-3-sealed-classes)
 - [Error Logging with Crashlytics](#error-logging-with-crashlytics)
@@ -47,16 +47,25 @@ void main() {
 }
 ```
 
-## ErrorWidget for Graceful Degradation
+## Fail Fast in Flutter
+
+**Let errors crash visibly. Never hide them with fallback widgets.**
 
 ```dart
 void main() {
-  ErrorWidget.builder = (details) {
+  // ✅ In debug: Show full error for debugging
+  // ✅ In release: Crash and log to Crashlytics (don't hide)
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
     if (kReleaseMode) {
-      return const Center(child: Text('Something went wrong'));
+      FirebaseCrashlytics.instance.recordFlutterFatalError(details);
     }
-    return ErrorWidget(details.exception);
   };
+
+  // ❌ NEVER: Custom ErrorWidget that hides problems
+  // ErrorWidget.builder = (details) => Text('Something went wrong');
+
+  runApp(const MyApp());
 }
 ```
 
