@@ -56,14 +56,10 @@ plugins/ce/
 │   ├── code-reviewer.md     # Accessed as @ce:code-reviewer
 │   ├── haiku.md             # Accessed as @ce:haiku
 │   └── log-reader.md        # Accessed as @ce:log-reader
-├── hooks/                    # Session hooks
-│   ├── hooks.json           # Hook configuration
-│   ├── session-start.sh     # Session startup hook
-│   └── notify.sh            # Cross-platform notification hook
-└── references/              # Document templates
-    ├── adr.md               # Architecture Decision Record template
-    ├── prd.md               # Product Requirements Document template
-    └── technical-design.md  # Technical design template
+└── hooks/                    # Session hooks
+    ├── hooks.json           # Hook configuration
+    ├── session-start.sh     # Session startup hook
+    └── notify.sh            # Cross-platform notification hook
 ```
 
 **Key principle**: Files and frontmatter use simple names (e.g., `architecting-systems`, `writing-tests`). Claude Code automatically adds the `ce:` namespace prefix based on the plugin name.
