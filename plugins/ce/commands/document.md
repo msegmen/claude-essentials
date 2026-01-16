@@ -16,7 +16,7 @@ Analyze the arguments and context to determine which instructions to pass:
 
 **Use CODE COMMENT instructions (delegate to `@ce:haiku`):**
 
-- Single source code file path provided (`.ts`, `.js`, `.py`, `.go`, `.rs`, etc.)
+- Single source code file path provided (`.dart`, `.ts`, `.js`, etc.)
 - Request mentions "comments", "inline docs", or "code comments"
 - Task is auditing/cleaning up comments in a single file
 - Task is asking to clean up comments in a group of files: find changed files via `git status -s` or by scoping to the folder the user specified

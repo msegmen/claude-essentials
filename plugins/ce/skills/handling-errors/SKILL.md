@@ -79,9 +79,8 @@ async function fetchData() {
 
 ## Language-Specific Patterns
 
-- **TypeScript/React**: See [reference/typescript-react.md](reference/typescript-react.md) for Error Boundaries, typed errors, Result pattern, UI display
-- **Python**: See [reference/python.md](reference/python.md) for EAFP, exception chaining, context managers
-- **Go**: See [reference/go.md](reference/go.md) for explicit error returns, wrapping with %w, sentinel errors
+- **Flutter/Dart**: See [reference/flutter-dart.md](reference/flutter-dart.md)
+- **TypeScript/React**: See [reference/typescript-react.md](reference/typescript-react.md)
 
 ## Anti-Patterns
 

@@ -15,11 +15,14 @@ User arguments: $ARGUMENTS
 Default action: audit (alternatives: upgrade, outdated)
 
 **Step 1: Detect the package manager**
+- pubspec.yaml (dart pub / flutter pub)
 - package.json (npm/yarn/pnpm)
-- requirements.txt or pyproject.toml (pip/poetry)
-- Cargo.toml (cargo)
-- go.mod (go)
-- Gemfile (bundler)
+- firebase.json with functions/ (check functions/package.json)
+
+**Flutter/Dart specific:**
+- audit: `dart pub outdated --dependency-overrides`
+- outdated: `flutter pub outdated` or `dart pub outdated`
+- upgrade: `flutter pub upgrade --major-versions`
 
 **Step 2: Execute based on action**
 

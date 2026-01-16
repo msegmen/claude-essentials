@@ -97,4 +97,7 @@ Stop when code is clear, duplication eliminated, types explicit, tests pass.
 - Abstracting before 3 occurrences
 - Optimizing without measuring
 
-For React/TypeScript patterns, see [references/react-typescript.md](references/react-typescript.md).
+## Language-Specific Patterns
+
+- **Flutter/Dart**: See [references/flutter-dart.md](references/flutter-dart.md)
+- **React/TypeScript**: See [references/react-typescript.md](references/react-typescript.md)

@@ -74,9 +74,9 @@ Everything else → Integration test
 
 ## Language-Specific Patterns
 
-- **JavaScript/Typescript/React**: See [references/typescript-react.md](references/typescript-react.md)
-- **Python**: See [references/python.md](references/python.md)
-- **Go**: See [references/go.md](references/go.md)
+- **Flutter/Dart**: See [references/flutter-dart.md](references/flutter-dart.md)
+- **TypeScript/React (Frontend)**: See [references/typescript-react.md](references/typescript-react.md)
+- **Node.js/Firebase (Backend)**: See [references/node-firebase.md](references/node-firebase.md)
 
 For flaky tests with timing issues, use `Skill(ce:condition-based-waiting)`.
 

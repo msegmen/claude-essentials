@@ -15,11 +15,11 @@ User arguments: $ARGUMENTS
 (If provided, use as the test command. Otherwise, auto-detect.)
 
 **Step 1: Detect the test command** (if no custom command provided)
-- Check for package.json (yarn test or npm test)
-- Check for pytest.ini or setup.py (pytest)
-- Check for Cargo.toml (cargo test)
+- Check for pubspec.yaml → `flutter test` (or `dart test` for pure Dart)
+- Check for integration_test/ directory → `flutter test integration_test/`
+- Check for package.json → `npm test` or `yarn test`
+- Check for firebase.json with functions → `cd functions && npm test`
 - Check for Makefile with test target
-- Check for go.mod (go test ./...)
 
 **Step 2: Run the tests**
 Execute the detected or provided test command.
