@@ -37,7 +37,7 @@ your-project/
 
 Keep this focused on what Claude needs to work in your codebase:
 
-```markdown
+````markdown
 # MyProject
 
 Brief description of what the project does.
@@ -57,13 +57,13 @@ make lint         # Lint and format
 ## Key Patterns
 
 Project-specific conventions Claude should follow.
-```
+````
 
 ## 2. Referencing ce Skills in Rules
 
 Rules auto-inject based on file paths. Reference ce skills instead of duplicating content:
 
-```markdown
+````markdown
 ---
 paths:
   - "**/*.test.ts"
@@ -84,7 +84,7 @@ When writing tests, load the ce:writing-tests skill for general patterns.
 ## Async Waiting
 
 When fixing flaky tests, load the ce:condition-based-waiting skill.
-```
+````
 
 This keeps rules lightweight while connecting to the deeper ce knowledge.
 
@@ -92,7 +92,7 @@ This keeps rules lightweight while connecting to the deeper ce knowledge.
 
 Create commands that wrap your actual workflows. Namespace them to avoid conflicts:
 
-```markdown
+````markdown
 ---
 description: Run tests on remote machine
 argument-hint: [target]
@@ -107,7 +107,9 @@ rr test -x           # Stop on first failure
 ```
 
 For advanced usage, load the rr:rr skill.
-```
+````
+
+> *[rr](https://github.com/rileyhilliard/rr) is a distributed testing CLI for load balancing tests across multiple worker machines*
 
 Commands should be thin wrappers that show:
 - What to run
@@ -118,7 +120,7 @@ Commands should be thin wrappers that show:
 
 Create skills for domain knowledge that doesn't fit in rules:
 
-```markdown
+````markdown
 ---
 name: myproject-models
 description: Data model patterns for MyProject. Use when creating new models, modifying schemas, or understanding relationships.
@@ -150,91 +152,9 @@ class Widget(BaseModel):
 
 - `src/models/base.py` - Base classes
 - `src/schemas/` - Pydantic schemas
-```
+````
 
-## 5. Settings Configuration
-
-Configure hooks, permissions, and environment in `settings.json`:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$(git rev-parse --show-toplevel)/.claude/hooks/validate.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "make lint"
-          }
-        ]
-      }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "Bash(make:*)",
-      "Bash(npm:*)",
-      "Bash(git:*)"
-    ],
-    "deny": [
-      "Bash(rm -rf /)",
-      "Bash(git push --force)"
-    ]
-  },
-  "env": {
-    "NODE_ENV": "development"
-  }
-}
-```
-
-### Hook Examples
-
-**Block dangerous patterns:**
-
-```bash
-#!/bin/bash
-# .claude/hooks/block-local-tests.sh
-input=$(cat)
-command=$(echo "$input" | jq -r '.command // empty')
-
-if echo "$command" | grep -qE 'pytest.*--local'; then
-    echo "BLOCKED: Use remote runner instead: make test-remote"
-    exit 2
-fi
-exit 0
-```
-
-**Auto-lint on stop:**
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "make fix"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-## 6. Rules Organization
+## 5. Rules Organization
 
 Organize rules by scope. More specific paths take precedence:
 
@@ -289,18 +209,18 @@ Load ce:condition-based-waiting for async test fixes.
 ```
 
 **`.claude/commands/myproject:test.md`** - Wraps tooling:
-```markdown
+````markdown
 ---
 description: Run project tests
 argument-hint: [area]
 ---
 
 ```bash
-make test-remote              # All tests
-make test-remote AREA=backend # Backend only
-make test-remote ARGS="-x"    # Stop on first failure
+rr test                      # All tests
+rr test-backend              # Backend only
+rr test-backend ARGS="-x"    # Stop on first failure
 ```
-```
+````
 
 **`.claude/skills/myproject-api/SKILL.md`** - Domain knowledge:
 ```markdown
