@@ -64,7 +64,6 @@ Generate a **Body** using this template:
 [Any additional context for reviewers, or "None" if not applicable]
 
 ````
-
 **Step 5: Create the PR**
 Execute:
 `gh pr create --title "<title>" --body "<body>" --base <base-branch>`
@@ -87,7 +86,3 @@ EOF
 - If `gh` is not installed: Report "GitHub CLI (gh) is required. Install with: brew install gh"
 - If not authenticated: Report "Please authenticate with: gh auth login"
 - If PR creation fails: Report the error message from gh
-
-```
-
-```
