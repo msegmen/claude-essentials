@@ -32,21 +32,28 @@ Process:
    - Consider edge cases mentioned in the issue
    - Think about testing requirements
 
-5. Implement the fix:
+5. Create a git worktree for isolated development:
+   - Create a new branch named after the issue key (e.g., `LUNA-123`)
+   - Create a worktree in a sibling directory: `git worktree add ../worktrees/<issue-key> -b <issue-key>`
+   - Change to the worktree directory to make changes there
+   - This keeps the main workspace clean while working on the fix
+
+6. Implement the fix:
    - Make the necessary code changes
    - Follow existing code patterns and style
    - Keep changes focused on the issue scope
 
-6. Verify the fix:
+7. Verify the fix:
    - Run relevant tests
    - Check that acceptance criteria are met
    - Ensure no regressions
 
-7. Summarize what was done:
+8. Summarize what was done:
    - List files changed
    - Explain the approach taken
+   - Provide the worktree path for review
    - Note any follow-up items or considerations
 
-Do not automatically commit or create a PR. Let the user review the changes first and decide when to commit.
+Do not automatically commit or create a PR. Let the user review the changes in the worktree first and decide when to commit.
 
 If the issue key is not provided or the issue cannot be found, ask for clarification.
