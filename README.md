@@ -40,11 +40,12 @@ Reusable development patterns, accessed with `ce:` prefix:
 
 **Debugging & Problem Solving:**
 
-| Skill                                                                            | Description                                  |
-| -------------------------------------------------------------------------------- | -------------------------------------------- |
-| [ce:systematic-debugging](plugins/ce/skills/systematic-debugging/SKILL.md)       | Four-phase debugging framework               |
-| [ce:condition-based-waiting](plugins/ce/skills/condition-based-waiting/SKILL.md) | Replace race conditions with polling         |
-| [ce:reading-logs](plugins/ce/skills/reading-logs/SKILL.md)                       | Efficient log analysis using targeted search |
+| Skill                                                                            | Description                                      |
+| -------------------------------------------------------------------------------- | ------------------------------------------------ |
+| [ce:systematic-debugging](plugins/ce/skills/systematic-debugging/SKILL.md)       | Four-phase debugging framework                   |
+| [ce:fixing-flaky-tests](plugins/ce/skills/fixing-flaky-tests/SKILL.md)           | Diagnose and fix tests that fail concurrently    |
+| [ce:condition-based-waiting](plugins/ce/skills/condition-based-waiting/SKILL.md) | Replace race conditions with polling             |
+| [ce:reading-logs](plugins/ce/skills/reading-logs/SKILL.md)                       | Efficient log analysis using targeted search     |
 
 **Code Quality:**
 
@@ -86,14 +87,6 @@ Expert AI personas for complex work, accessed with `@ce:` prefix:
 | [@ce:code-reviewer](plugins/ce/agents/code-reviewer.md) | Comprehensive PR/MR reviews enforcing standards    |
 | [@ce:haiku](plugins/ce/agents/haiku.md)                 | Lightweight Haiku agent for simple delegated tasks |
 | [@ce:log-reader](plugins/ce/agents/log-reader.md)       | Efficient log file analysis using targeted search  |
-
-### Reference Templates
-
-| Template                                                      | Description                   |
-| ------------------------------------------------------------- | ----------------------------- |
-| [ADR](plugins/ce/references/adr.md)                           | Architecture Decision Record  |
-| [PRD](plugins/ce/references/prd.md)                           | Product Requirements Document |
-| [Technical Design](plugins/ce/references/technical-design.md) | Technical Design Document     |
 
 ### Hooks
 
@@ -261,8 +254,7 @@ This will be accessible as `@ce:my-agent`.
         ├── commands/             # 12 commands (/ce:test, /ce:plan, etc.)
         ├── skills/               # 14 skills (ce:writing-tests, etc.)
         ├── agents/               # 3 agents (@ce:code-reviewer, @ce:haiku, etc.)
-        ├── hooks/                # Session automation
-        └── references/           # Document templates (ADR, PRD, Technical Design)
+        └── hooks/                # Session automation
 ```
 
 ## Tips
@@ -293,6 +285,10 @@ ce:architecting-systems We need OAuth2 + JWT authentication for a React SPA with
 ```
 
 **Run tests first:** Use `/ce:test` before committing to catch issues early.
+
+## Documentation
+
+- [Extending for Projects](docs/extending-for-projects.md) - How to wrap and extend ce for your specific codebase
 
 ## Contributing
 

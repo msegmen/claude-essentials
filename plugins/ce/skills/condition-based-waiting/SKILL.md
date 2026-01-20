@@ -5,7 +5,9 @@ description: Fixes flaky tests by replacing arbitrary timeouts with condition po
 
 # Condition-Based Waiting
 
-**Use with:** `writing-tests` skill for overall test writing guidance. This skill focuses specifically on eliminating timing-based flakiness.
+**Use with:** `writing-tests` skill for overall test guidance. This skill focuses on timing-based flakiness.
+
+**Related:** If tests pass alone but fail concurrently, the problem may be shared state, not timing. See `fixing-flaky-tests` skill for diagnosis.
 
 ## Overview
 
@@ -13,50 +15,47 @@ Flaky tests often guess at timing with arbitrary delays. This creates race condi
 
 **Core principle:** Wait for the actual condition you care about, not a guess about how long it takes.
 
-## When to Use
+## When to use
 
-```dot
-digraph when_to_use {
-    "Test uses setTimeout/sleep?" [shape=diamond];
-    "Testing timing behavior?" [shape=diamond];
-    "Document WHY timeout needed" [shape=box];
-    "Use condition-based waiting" [shape=box];
-
-    "Test uses setTimeout/sleep?" -> "Testing timing behavior?" [label="yes"];
-    "Testing timing behavior?" -> "Document WHY timeout needed" [label="yes"];
-    "Testing timing behavior?" -> "Use condition-based waiting" [label="no"];
-}
+```
+Test has arbitrary delay (setTimeout/sleep)?
+    │
+    ├─ Testing actual timing (debounce, throttle)?
+    │   └─ Yes → Keep timeout, document WHY
+    │
+    └─ No → Replace with condition-based waiting
 ```
 
 **Use when:**
-
 - Tests have arbitrary delays (`setTimeout`, `sleep`, `time.sleep()`)
-- Tests are flaky (pass sometimes, fail under load)
-- Tests timeout when run in parallel
+- Tests are flaky with timing-related errors
 - Waiting for async operations to complete
 
 **Don't use when:**
+- Testing actual timing behavior (debounce, throttle, intervals)
+- Problem is shared state between tests (use `fixing-flaky-tests`)
 
-- Testing actual timing behavior (debounce, throttle intervals)
-- Always document WHY if using arbitrary timeout
-
-## Core Pattern
+## Core pattern
 
 ```typescript
-// ❌ BEFORE: Guessing at timing
+// Bad: Guessing at timing
 await new Promise((r) => setTimeout(r, 50));
 const result = getResult();
 expect(result).toBeDefined();
 
-// ✅ AFTER: Waiting for condition
-await waitFor(() => getResult() !== undefined);
-const result = getResult();
+// Good: Waiting for condition (returns the result)
+const result = await waitFor(() => getResult(), 'result to be available');
 expect(result).toBeDefined();
 ```
 
 ## Implementation
 
-**Note:** Use your test framework's built-in `waitFor` if available (e.g., React Testing Library, Playwright). The implementation below is for custom scenarios.
+**Prefer framework built-ins** when available:
+- Testing Library: `findBy` queries, `waitFor`
+- Playwright: auto-waiting, `expect(locator).toBeVisible()`
+- pytest: `asyncio.wait_for`, tenacity
+
+**Custom polling fallback** when built-ins aren't enough:
 
 ```typescript
 async function waitFor<T>(
@@ -71,48 +70,45 @@ async function waitFor<T>(
     if (result) return result;
 
     if (Date.now() - startTime > timeoutMs) {
-      throw new Error(
-        `Timeout waiting for ${description} after ${timeoutMs}ms`
-      );
+      throw new Error(`Timeout waiting for ${description} after ${timeoutMs}ms`);
     }
 
-    // setTimeout OK here: used for polling mechanism, not test delay
-    await new Promise((r) => setTimeout(r, 10));
+    await new Promise((r) => setTimeout(r, 50));  // Poll interval
   }
 }
 ```
 
 **Common use cases:**
-
 - `waitFor(() => events.find(e => e.type === 'DONE'), 'done event')`
 - `waitFor(() => machine.state === 'ready', 'ready state')`
 - `waitFor(() => items.length >= 5, '5+ items')`
-- `waitFor(() => obj.ready && obj.value > 10, 'complex condition')`
 
-See @example.ts for complete implementation with domain-specific helpers.
+## Language-specific patterns
 
-## Common Mistakes
+| Stack | Reference |
+|-------|-----------|
+| Python (pytest, asyncio, tenacity) | [references/python.md](references/python.md) |
+| TypeScript (Jest, Testing Library, Playwright) | [references/typescript.md](references/typescript.md) |
 
-**❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU
-**✅ Fix:** Poll every 50ms
+## Common mistakes
 
-**❌ No timeout:** Loop forever if condition never met
-**✅ Fix:** Always include timeout with clear error
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Polling too fast | `setTimeout(check, 1)` wastes CPU | Poll every 50ms |
+| No timeout | Loop forever if condition never met | Always include timeout |
+| Stale data | Caching state before loop | Call getter inside loop |
+| No description | "Timeout" with no context | Include what you waited for |
 
-**❌ Stale data:** Cache state before loop
-**✅ Fix:** Call getter inside loop for fresh data
-
-## When Arbitrary Timeout IS Correct
+## When arbitrary timeout IS correct
 
 ```typescript
 // Tool ticks every 100ms - need 2 ticks to verify partial output
-await waitForEvent(manager, "TOOL_STARTED"); // First: wait for condition
+await waitForEvent(manager, "TOOL_STARTED");  // First: wait for condition
 await new Promise((r) => setTimeout(r, 200)); // Then: wait for timed behavior
 // 200ms = 2 ticks at 100ms intervals - documented and justified
 ```
 
 **Requirements:**
-
 1. First wait for triggering condition
 2. Based on known timing (not guessing)
 3. Comment explaining WHY

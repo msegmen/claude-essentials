@@ -1,7 +1,7 @@
 ---
 description: Start systematic debugging session for a bug
 argument-hint: "<bug-description>"
-allowed-tools: Task Skill
+allowed-tools: Task, Skill
 ---
 
 Use the `Skill(ce:systematic-debugging)` skill to debug and fix a bug. When investigation involves log files, also use the `Skill(ce:reading-logs)` skill for efficient log analysis.

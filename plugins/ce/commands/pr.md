@@ -8,7 +8,7 @@ allowed-tools: Task
 
 ## Task Prompt for Haiku Agent
 
-```
+````
 Create a pull request for the current branch.
 
 User arguments: $ARGUMENTS
@@ -43,8 +43,9 @@ Generate a **Title** using conventional format:
 - `fix: resolve race condition in data sync`
 - `refactor: simplify payment processing logic`
 
-Generate a **Body** using this template:
-```
+Generate a PR **Body** using this template:
+
+<template>
 
 ## Summary
 
@@ -56,14 +57,13 @@ Generate a **Body** using this template:
 
 ## Testing
 
-- [ ] Unit tests added/updated
-- [ ] Manual testing completed
+- [ ] Tests added/updated
 
 ## Notes
 
 [Any additional context for reviewers, or "None" if not applicable]
 
-````
+</template>
 
 **Step 5: Create the PR**
 Execute:
@@ -75,7 +75,7 @@ gh pr create --title "<title>" --base <base-branch> --body "$(cat <<'EOF'
 <body content here>
 EOF
 )"
-````
+```
 
 **Step 6: Report Results**
 
@@ -87,7 +87,4 @@ EOF
 - If `gh` is not installed: Report "GitHub CLI (gh) is required. Install with: brew install gh"
 - If not authenticated: Report "Please authenticate with: gh auth login"
 - If PR creation fails: Report the error message from gh
-
-```
-
-```
+````
