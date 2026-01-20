@@ -1,0 +1,9 @@
+{
+  "name": "acfs",
+  "description": "ACFS - Agentic Coding Flywheel Setup plugin for multi-agent workflows with issue tracking, session persistence, and coordination",
+  "version": "1.0.1",
+  "author": {
+    "name": "ACFS Team"
+  },
+  "license": "MIT"
+}
