@@ -73,6 +73,57 @@
         "./agents/log-reader.md"
       ],
       "hooks": "./hooks/hooks.json"
+    },
+    {
+      "name": "acfs",
+      "source": "./plugins/acfs/",
+      "description": "ACFS - Agentic Coding Flywheel Setup plugin for multi-agent workflows with issue tracking, session persistence, and coordination",
+      "version": "1.0.1",
+      "author": {
+        "name": "ACFS Team"
+      },
+      "license": "MIT",
+      "keywords": [
+        "acfs",
+        "multi-agent",
+        "coordination",
+        "beads",
+        "issue-tracking",
+        "session-persistence",
+        "handoff",
+        "workflow"
+      ],
+      "category": "workflows",
+      "strict": true,
+      "commands": [
+        "./commands/doctor.md",
+        "./commands/ready.md",
+        "./commands/claim.md",
+        "./commands/create.md",
+        "./commands/update.md",
+        "./commands/complete.md",
+        "./commands/handoff.md",
+        "./commands/search.md",
+        "./commands/recall.md",
+        "./commands/reserve.md",
+        "./commands/message.md",
+        "./commands/scan.md",
+        "./commands/sync.md"
+      ],
+      "skills": [
+        "./skills/session-completion",
+        "./skills/issue-driven-development",
+        "./skills/agent-coordination",
+        "./skills/session-persistence",
+        "./skills/multi-agent-workflows",
+        "./skills/pre-commit-validation",
+        "./skills/two-person-rule"
+      ],
+      "agents": [
+        "./agents/orchestrator.md",
+        "./agents/handoff-writer.md"
+      ],
+      "hooks": "./hooks/hooks.json"
     }
   ]
 }
