@@ -8,8 +8,8 @@ This is a unified Claude Code plugin (`ce`) that provides development workflows,
 
 **The ce plugin provides:**
 
-- **13 Commands** - Development workflows (test, explain, debug, optimize, refactor, review, commit, deps, fix-issue, pr, document, plan, execute)
-- **15 Skills** - Reusable patterns for testing, debugging, refactoring, architecture, and planning
+- **14 Commands** - Development workflows (test, explain, debug, optimize, refactor, review, commit, deps, fix-issue, pr, document, plan, execute, init)
+- **18 Skills** - Reusable patterns for testing, debugging, refactoring, architecture, and planning
 - **3 Agents** - Expert AI personas (code-reviewer, haiku, log-reader)
 - **Session Hooks** - Automatic project configuration on startup
 - **Reference Templates** - ADR, PRD, and technical design templates
@@ -32,7 +32,7 @@ The ce plugin lives in `plugins/ce/` with this structure:
 plugins/ce/
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin metadata (name: "ce", description, version, author, license)
-├── commands/                 # 13 slash commands
+├── commands/                 # 14 slash commands
 │   ├── test.md              # Accessed as /ce:test
 │   ├── explain.md           # Accessed as /ce:explain
 │   ├── debug.md             # Accessed as /ce:debug
@@ -45,8 +45,9 @@ plugins/ce/
 │   ├── pr.md                # Accessed as /ce:pr
 │   ├── document.md          # Accessed as /ce:document
 │   ├── plan.md              # Accessed as /ce:plan
-│   └── execute.md           # Accessed as /ce:execute
-├── skills/                   # 15 skills
+│   ├── execute.md           # Accessed as /ce:execute
+│   └── init.md              # Accessed as /ce:init
+├── skills/                   # 18 skills
 │   ├── writing-tests/       # Accessed as @skills/ce:writing-tests
 │   │   └── SKILL.md         # name: writing-tests (no ce: prefix in file)
 │   ├── architecting-systems/    # Accessed as @skills/ce:architecting-systems

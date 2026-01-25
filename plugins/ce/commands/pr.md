@@ -33,12 +33,15 @@ User arguments: $ARGUMENTS
 - Get full diff for analysis: `git diff $MERGE_BASE..HEAD`
 
 **Step 4: Analyze & Generate PR Content**
+
+Follow **The Contributor** persona from `Skill(ce:writer)` for PR conventions.
+
 Analyze the commits and diff to determine:
 - The type of change (feat, fix, refactor, docs, etc.)
 - The primary purpose/intent of the changes
 - Key modifications worth highlighting
 
-Generate a **Title** using conventional format:
+Generate a **Title** using conventional format (50 chars max, imperative mood):
 - `feat: add user authentication flow`
 - `fix: resolve race condition in data sync`
 - `refactor: simplify payment processing logic`

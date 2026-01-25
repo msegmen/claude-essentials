@@ -25,7 +25,7 @@ Quick workflows for everyday development tasks, accessed with `/ce:` prefix:
 | [/ce:document](plugins/ce/commands/document.md)   | Create or improve documentation                       |
 | [/ce:plan](plugins/ce/commands/plan.md)           | Create a detailed implementation plan                 |
 | [/ce:execute](plugins/ce/commands/execute.md)     | Execute an implementation plan from the plans folder  |
-| [/ce:design](plugins/ce/commands/design.md)       | Start a design session                                |
+| [/ce:init](plugins/ce/commands/init.md)           | Bootstrap repo with .claude/ config (rules, permissions, settings) |
 
 ### Skills
 
@@ -65,10 +65,11 @@ Reusable development patterns, accessed with `ce:` prefix:
 | [ce:architecting-systems](plugins/ce/skills/architecting-systems/SKILL.md) | Design scalable architectures and technical documentation |
 | [ce:design](plugins/ce/skills/design/SKILL.md)                             | Frontend design skill                                     |
 
-**Documentation:**
+**Documentation & Writing:**
 
 | Skill                                                                                | Description                                             |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| [ce:writer](plugins/ce/skills/writer/SKILL.md)                                       | Writing style guide with 6 personas (Engineer, PM, Marketer, Educator, Contributor, UX Writer) |
 | [ce:documenting-systems](plugins/ce/skills/documenting-systems/SKILL.md)             | Best practices for writing markdown documentation       |
 | [ce:documenting-code-comments](plugins/ce/skills/documenting-code-comments/SKILL.md) | Standards for self-documenting code and inline comments |
 
@@ -135,9 +136,89 @@ ce:writing-tests
 ce:architecting-systems
 ```
 
+---
+
+## Bootstrapping Your Repository
+
+The `/ce:init` command sets up your repository with Claude Code configuration that follows best practices. This is the recommended first step when starting work on any project.
+
+### What It Does
+
+**Fresh repositories** (no `.claude/` directory):
+
+1. Detects your project stack (Python, TypeScript, Rust, Go, etc.)
+2. Generates a complete `.claude/` configuration:
+
+```
+.claude/
+├── CLAUDE.md           # Project overview, architecture, quick commands
+├── settings.json       # Permissions tailored to your stack
+└── rules/
+    ├── testing.md          # References ce:writing-tests
+    ├── error-handling.md   # References ce:handling-errors
+    ├── debugging.md        # References ce:systematic-debugging
+    ├── verification.md     # References ce:verification-before-completion
+    └── {stack}/            # Stack-specific rules (python/, frontend/, etc.)
+```
+
+**Existing configurations** (`.claude/` already exists):
+
+1. Audits your current setup against best practices
+2. Identifies missing skill references in rules
+3. Suggests permission and rule improvements
+4. Offers to apply fixes with your confirmation
+
+### Quick Start
+
+```bash
+# Initialize a new project
+/ce:init
+
+# Audit an existing configuration
+/ce:init --audit
+
+# Force regenerate (overwrites existing)
+/ce:init --force
+```
+
+### Why This Matters
+
+The generated configuration:
+
+- **Progressive disclosure** - Rules stay concise (<100 lines), reference ce:* skills for depth, use `references/` subdirectories for domain-specific details
+- **Rules reference ce:* skills** - Don't duplicate content, point to proven patterns
+- **Permissions are stack-aware** - Python projects get `uv`, `pytest`; Node gets `npm`, `bun`, etc.
+- **Safety defaults included** - Blocks `rm -rf`, force pushes, hard resets
+- **Path-scoped rules** - Activate only when working in relevant files
+
+**Progressive disclosure structure:**
+```
+rules/
+├── testing.md              # ~50 lines, points to ce:writing-tests
+└── api/
+    ├── conventions.md      # ~100 lines, overview
+    └── references/         # Loaded on-demand
+        ├── errors.md       # Detailed error patterns
+        └── pagination.md   # Pagination strategies
+```
+
+This keeps context small while maintaining depth. Claude loads reference files only when needed.
+
+Based on [Claude platform best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
+
+---
+
 ## Usage Examples
 
 ### Typical Workflows
+
+**Bootstrap a new project:**
+
+```bash
+cd my-project
+/ce:init
+# Review the generated config, confirm, done
+```
 
 **Fix failing tests:**
 
@@ -251,8 +332,8 @@ This will be accessible as `@ce:my-agent`.
     └── ce/
         ├── .claude-plugin/
         │   └── plugin.json       # Plugin metadata
-        ├── commands/             # 12 commands (/ce:test, /ce:plan, etc.)
-        ├── skills/               # 14 skills (ce:writing-tests, etc.)
+        ├── commands/             # 14 commands (/ce:test, /ce:plan, /ce:init, etc.)
+        ├── skills/               # 18 skills (ce:writing-tests, etc.)
         ├── agents/               # 3 agents (@ce:code-reviewer, @ce:haiku, etc.)
         └── hooks/                # Session automation
 ```

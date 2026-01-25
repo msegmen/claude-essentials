@@ -28,11 +28,17 @@ logger.error("Failed to save user: Connection timeout after 30s", {
 
 **For users:**
 
+For user-facing error copy, use `Skill(ce:writer)` with **The UX Writer** persona. Key principles:
+
+- Brief and specific (not "Something went wrong")
+- Actionable (tell them what to do next)
+- No blame (never "You entered invalid...")
+
 ```typescript
 showError({
-  title: "Upload Failed",
-  message: "Your file is too large. Maximum size is 10MB.",
-  actions: [{ label: "Choose smaller file", onClick: selectFile }],
+  title: "Upload failed",
+  message: "File exceeds 10MB limit. Choose a smaller file.",
+  actions: [{ label: "Choose file", onClick: selectFile }],
 });
 ```
 

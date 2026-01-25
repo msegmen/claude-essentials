@@ -5,6 +5,8 @@ description: Creates task-oriented technical documentation with progressive disc
 
 # Technical Documentation
 
+For writing style, tone, and voice guidance, use `Skill(ce:writer)` with **The Engineer** persona.
+
 ## Core Principles
 
 ### 1. Progressive Disclosure
@@ -23,11 +25,11 @@ Reveal information in layers:
 ### 2. Task-Oriented Writing
 
 ```markdown
-<!-- ❌ Feature-oriented -->
+<!-- Bad: Feature-oriented -->
 ## AuthService Class
 The AuthService class provides authentication methods...
 
-<!-- ✅ Task-oriented -->
+<!-- Good: Task-oriented -->
 ## Authenticating Users
 To authenticate a user, call login() with credentials:
 ```
@@ -36,7 +38,7 @@ To authenticate a user, call login() with credentials:
 
 Every concept needs a concrete example.
 
-## Writing Standards
+## Formatting Standards
 
 - **Sentence case headings**: "Getting started" not "Getting Started"
 - **Max 3 heading levels**: Deeper means split the doc
@@ -64,6 +66,7 @@ Every concept needs a concrete example.
 
 For README, API endpoint, and file organization templates, see [references/templates.md](references/templates.md).
 
-## Diagrams
+## Related Skills
 
-Use `Skill(ce:visualizing-with-mermaid)` for architecture and flow diagrams.
+- `Skill(ce:writer)` - Writing style, tone, and voice (load The Engineer persona)
+- `Skill(ce:visualizing-with-mermaid)` - Architecture and flow diagrams
