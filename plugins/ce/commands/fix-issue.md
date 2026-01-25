@@ -1,53 +1,75 @@
 ---
 description: Fix a GitHub issue by number
-argument-hint: "<issue-number>"
-allowed-tools: Bash, Read, Write, Edit, Grep, Glob
+argument-hint: "<issue-number> [--worktree]"
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob, Task
 ---
 
-Fetch a GitHub issue and implement a fix for it.
+Fix a GitHub issue using TDD methodology.
 
-Arguments:
+## Arguments
 
-- `$ARGUMENTS`: Required. The GitHub issue number (e.g., "123" or "#123")
+- `$ARGUMENTS`: Issue number (e.g., "123" or "#123") and optional flags
+  - `--worktree`: Create isolated git worktree for this fix
 
-Process:
+## Process
 
-1. Fetch the issue details:
-   ```bash
-   gh issue view <number> --json title,body,labels,comments
-   ```
+### 1. Fetch Issue Details
 
-2. Analyze the issue:
-   - Understand what's being requested or what bug is reported
-   - Check labels for context (bug, feature, enhancement, etc.)
-   - Review any comments for additional context or constraints
-   - Identify acceptance criteria if specified
+```bash
+gh issue view <number> --json title,body,labels,comments
+```
 
-3. Explore the codebase:
-   - Find relevant files mentioned in the issue
-   - Understand the current implementation
-   - Identify where changes need to be made
+- Understand what's being requested or what bug is reported
+- Check labels for context (bug, feature, enhancement, etc.)
+- Review comments for additional context or constraints
+- Identify acceptance criteria if specified
 
-4. Plan the fix:
-   - Break down the work into steps
-   - Consider edge cases mentioned in the issue
-   - Think about testing requirements
+### 2. Setup Workspace (if --worktree flag)
 
-5. Implement the fix:
-   - Make the necessary code changes
-   - Follow existing code patterns and style
-   - Keep changes focused on the issue scope
+Follow @superpowers:using-git-worktrees to create an isolated workspace:
 
-6. Verify the fix:
-   - Run relevant tests
-   - Check that the acceptance criteria are met
-   - Ensure no regressions
+- Branch name: `fix/issue-<number>`
+- Directory: Follow skill's priority order (existing `.worktrees/` → CLAUDE.md → ask)
+- Verify directory is gitignored
+- Run project setup (npm install, etc.)
+- Verify baseline tests pass
 
-7. Summarize what was done:
-   - List files changed
-   - Explain the approach taken
-   - Note any follow-up items or considerations
+### 3. Analyze the Codebase
 
-Do not automatically commit or create a PR. Let the user review the changes first and decide when to commit.
+- Find relevant files mentioned in or related to the issue
+- Understand the current implementation
+- Identify where changes need to be made
+- Note existing test patterns for consistency
 
-If the issue number is not provided or the issue cannot be found, ask for clarification.
+### 4. Implement with TDD
+
+Follow @superpowers:test-driven-development strictly.
+
+**For bug fixes:**
+1. **RED**: Write a failing test that reproduces the bug
+   - Test must fail with expected error
+   - Watch it fail before proceeding
+2. **GREEN**: Write minimal code to make the test pass
+3. **REFACTOR**: Clean up while staying green
+
+**For feature requests:**
+1. **RED**: Write a failing test for the first behavior slice
+2. **GREEN**: Implement just enough to pass
+3. **REFACTOR**: Clean up
+4. **Repeat** for each additional behavior
+
+**Enforcement:**
+- No implementation code without a failing test first
+- If test passes immediately, rewrite the test
+- Announce each phase: "RED: Writing failing test...", "GREEN: Implementing..."
+
+### 5. Verify and Summarize
+
+- Run full test suite - all tests must pass
+- List files changed
+- Explain the approach taken
+- Note any follow-up items or considerations
+
+Do not automatically commit or create a PR. Let the user review the changes first.
+
+If the issue number is not provided or cannot be found, ask for clarification.
