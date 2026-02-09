@@ -95,6 +95,20 @@ Extract from detected manifest:
 - Scripts/commands (test, lint, build)
 - Dependencies (for framework detection)
 
+### Step 2.5: Generate Domain Experts
+
+Scan the codebase to identify major domains and generate expert files for plan execution. These experts provide project-specific context to subagents during `/ce:execute`.
+
+For detailed heuristics, templates, and constraints, see [references/expert-generation.md](references/expert-generation.md).
+
+**Quick summary:**
+1. Identify domains: Scan `src/` (or equivalent) 2 levels deep for directories with 3+ files
+2. Extract conventions: Read 3-5 representative files per domain, extract naming, test patterns, error handling, imports, key libraries
+3. Write experts: Generate 400-600 word expert files to `.claude/experts/<domain>-expert.md`
+4. Maximum 5-6 common experts per project
+
+**`--force` behavior:** Regenerate all experts without confirmation.
+
 ### Step 3: Build Generation Plan
 
 Based on detected stack, prepare:
@@ -143,7 +157,7 @@ Will create:
   .claude/
   ├── CLAUDE.md                 # Project overview, architecture
   ├── settings.json             # Permissions for: npm, uv, pytest, git
-  └── rules/
+  ├── rules/
       ├── testing.md            # -> ce:writing-tests
       ├── error-handling.md     # -> ce:handling-errors
       ├── debugging.md          # -> ce:systematic-debugging
@@ -156,6 +170,10 @@ Will create:
           └── references/       # Detailed docs (loaded on-demand)
               ├── errors.md     # Error response formats
               └── endpoints.md  # Endpoint patterns
+  └── experts/
+      ├── api-expert.md           # FastAPI conventions
+      ├── frontend-expert.md      # React component patterns
+      └── testing-expert.md       # pytest/vitest patterns
 ```
 
 Use `AskUserQuestion` to confirm before writing files.
@@ -199,6 +217,11 @@ Check for:
 - Duplicated content that should reference a ce:* skill instead
 - Large inline code examples that should be in references/
 
+**Missing or stale experts:**
+- Scan codebase for major domains not covered by `.claude/experts/` files
+- Compare `generated_at` timestamps in expert frontmatter against `source_files` modification times
+- Flag stale experts and missing domains
+
 ### Step 3: Generate Audit Report
 
 ```
@@ -218,6 +241,11 @@ Progressive disclosure issues:
   - rules/api/endpoints.md: 847 lines, consider splitting into references/
   - rules/frontend/components.md: Duplicates ce:design skill content
   - skills/my-skill/references/nested/deep.md: References should be one level deep
+
+Experts:
+  + api-expert.md: Up to date
+  - frontend-expert.md: Stale (src/components/ modified since generation)
+  - Missing: database-expert.md (detected Prisma in src/db/)
 
 Apply suggestions? [Y/n/select]
 ```

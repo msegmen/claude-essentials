@@ -253,6 +253,27 @@ The `ce` plugin includes a `session-start.sh` hook that:
 - Injects instructions as additional context via JSON output
 - Uses progressive disclosure (skills loaded on-demand via Skill tool)
 
+### Domain Expert System
+
+The `ce` plugin includes a two-tier domain expert system that enriches subagent dispatches with project-specific context:
+
+- **Tier 1 (Common Experts):** `/ce:init` scans the codebase, identifies major domains (auth, API, frontend, etc.), and generates persistent expert files in `.claude/experts/`. Each expert contains project-specific conventions extracted from actual code (naming patterns, test style, key libraries, error handling approach).
+
+- **Tier 2 (Ephemeral Experts):** During plan execution, `ce:executing-plans` checks task groups against existing experts. If no match, it generates a short inline expert summary on-the-fly from the task's Context files.
+
+Expert files use a `domains` list in YAML frontmatter for robust matching. The executing-plans skill infers a domain from task Context paths (e.g., `src/authentication/login.ts` yields `authentication`), then scans each expert's `domains` list for a match. This means `src/authentication/` matches `auth-expert.md` because its frontmatter includes `authentication` as an alias:
+
+```yaml
+---
+name: auth-expert
+domains: [auth, authentication, user-auth]
+generated_at: 2026-02-09T10:30:00Z
+source_files: [src/auth/login.ts, src/auth/types.ts]
+---
+```
+
+Expert context is injected into `general-purpose` Task dispatches via `<domain-expert-context>` XML tags. Code conventions from the expert override task instructions, but execution mechanics (commit strategy, reporting format) defer to the dispatch template. Plans without expert infrastructure execute normally (backward compatible).
+
 ### Notification Hook
 
 The `ce` plugin includes a Notification hook that triggers alerts when Claude needs user input:
@@ -291,6 +312,10 @@ The marketplace validates:
 - Hook scripts use `set -euo pipefail` for error safety
 - Avoid hardcoded paths (use `${CLAUDE_PLUGIN_ROOT}` for relative paths)
 - Shell scripts should handle missing files gracefully
+
+### Generated Files
+
+`/ce:init` generates expert files in the target project's `.claude/experts/` directory. These are NOT agents (they lack `tools`/`model`/`color` frontmatter). They are reference materials consumed by `ce:executing-plans` during subagent dispatch. Recommend committing them to git (they contain project conventions, not secrets).
 
 ### Shell Script Gotchas
 

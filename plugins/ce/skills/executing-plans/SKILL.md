@@ -62,6 +62,70 @@ Task tool (general-purpose):
     Commit after each task. Report: files changed, test results
 ```
 
+### Expert-Aware Dispatch
+
+Enrich sub-agent prompts with project-specific conventions by matching task groups to domain experts.
+
+**Domain inference** — extract domain from Context paths:
+```
+1. Extract dirs from paths (src/auth/login.ts → [src, auth])
+2. Filter non-domain: src, lib, utils, common, shared, helpers, types,
+   tests, __tests__, __mocks__, packages, apps, node_modules, dist,
+   build, .next, vendor, internal, cmd, public, static, config,
+   scripts, fixtures, __pycache__
+3. Count remaining dirs across all paths
+4. Select most frequent; tie-break by deepest (most specific)
+5. Monorepo (packages/ or apps/): prepend package name (api-billing)
+6. Validate: non-empty, lowercase alphanumeric + hyphens only
+   Fails → skip expert injection, use generic dispatch
+```
+
+**Expert matching** — scan `.claude/experts/*-expert.md` files, parse YAML frontmatter `domains` list. If inferred domain appears in any expert's `domains` list, match that expert. Multiple matches: prefer the expert where domain is first in the list (primary domain). No match: ephemeral fallback.
+
+**Dispatch with expert context** — prepend to Task prompt:
+```
+<domain-expert-context>
+The following project CODE CONVENTIONS and PATTERNS must be followed
+when executing tasks. If a task instruction conflicts with these code
+conventions, follow the conventions and note the deviation. Task
+execution instructions (commit strategy, reporting format, file scope)
+take precedence over this context.
+
+[expert content — persistent file body or ephemeral generation]
+</domain-expert-context>
+
+Execute these tasks from [plan-file] IN ORDER:
+- Task 1: ...
+Use skills: <relevant skills>
+Commit after each task. Report: files changed, test results.
+```
+
+**Ephemeral fallback** — when no persistent expert matches, generate an inline expert from Context paths. Do not persist ephemeral context.
+
+*Step 1: Read files.* Read 2-3 files from the task group's Context paths. Prefer one implementation file and one test file if available.
+
+*Step 2: Generate summary.* From the files you read, produce a 250-350 word summary following this structure:
+
+```
+## Project Conventions
+- Language, framework, key config
+- Naming patterns (variables, functions, files)
+- Import style
+- Error handling approach (if visible)
+- Test patterns (if test files present)
+
+## Patterns in This Codebase
+One code snippet (5-8 lines) showing the dominant style.
+```
+
+Only include patterns you observed in the actual files. Omit any bullet where no pattern is observable. Do not add generic advice. If fewer than 2 bullets are extractable, skip expert injection entirely.
+
+*Step 3: Inject.* Wrap the result in `<domain-expert-context>` with the priority preamble above and prepend to the Task prompt.
+
+**New-file edge case:** When tasks create files that don't exist yet, use the target directory path for domain inference instead of existing file paths.
+
+**Backward compatibility:** If no `.claude/experts/` directory exists or no domain is inferable, dispatch without expert context (current behavior).
+
 **Architectural fit:** Changes should integrate cleanly with existing patterns. If a change feels like it's fighting the architecture, that's a signal to refactor first rather than bolt something on. Don't reinvent wheels when battle-tested libraries exist, but don't reach for a dependency for trivial things either (no lodash just for `_.map`). The goal is zero tech debt, not "ship now, fix later."
 
 **Auto-recovery:**
