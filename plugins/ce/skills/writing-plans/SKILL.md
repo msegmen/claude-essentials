@@ -7,6 +7,8 @@ description: Create implementation plans with tasks grouped by subsystem. Relate
 
 Write step-by-step implementation plans for agentic execution. Each task should be a **complete unit of work** that one agent handles entirely.
 
+**Clarify ambiguity upfront:** If the plan has unclear requirements or meaningful tradeoffs, use `AskUserQuestion` before writing the plan. Present options with descriptions explaining the tradeoffs. Use `multiSelect: true` for independent features that can be combined; use single-select for mutually exclusive choices. Don't guess when the user can clarify in 10 seconds.
+
 **Save to:** `**/plans/YYYY-MM-DD-<feature-name>.md`
 
 ## Plan Template
@@ -78,19 +80,25 @@ A task includes **everything** to complete one logical unit:
 During execution, tasks are **grouped by subsystem** to share agent context. Structure your plan to make grouping clear:
 
 ```markdown
-## Authentication Tasks          ← These will run in one agent
+## Authentication Tasks ← These will run in one agent
+
 ### Task 1: Add login
+
 ### Task 2: Add logout
 
-## Billing Tasks                 ← These will run in another agent (parallel)
+## Billing Tasks ← These will run in another agent (parallel)
+
 ### Task 3: Add billing API
+
 ### Task 4: Add webhooks
 
-## Integration Tasks             ← Sequential (depends on above)
+## Integration Tasks ← Sequential (depends on above)
+
 ### Task 5: Wire auth + billing
 ```
 
 **Execution model:**
+
 - Tasks under same `##` heading → grouped into one agent
 - Groups touching different subsystems → run in parallel
 - Max 3-4 tasks per group (split larger sections)
@@ -106,7 +114,7 @@ Tasks in the **same subsystem** should be sequential or combined into one task.
 
 ## Large Plans
 
-For plans over ~1000 lines, split into phases in a folder:
+For plans over ~500 lines, split into phases in a folder:
 
 ```
 **/plans/YYYY-MM-DD-feature/

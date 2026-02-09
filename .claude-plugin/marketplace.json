@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Essential Claude Code configuration with practical commands, specialized agents, and battle-tested development skills for daily workflows",
-    "version": "2.1.1"
+    "version": "2.3.0"
   },
   "plugins": [
     {
       "name": "ce",
       "source": "./plugins/ce/",
-      "description": "Claude Essentials - Complete development toolkit with 14 commands, 18 skills, and 3 agents unified under ce namespace",
-      "version": "2.1.1",
+      "description": "Claude Essentials - Complete development toolkit with 14 commands, 20 skills, and 4 agents unified under ce namespace",
+      "version": "2.3.0",
       "author": {
         "name": "Riley Hilliard",
         "url": "https://github.com/rileyhilliard"
@@ -68,12 +68,15 @@
         "./skills/architecting-systems",
         "./skills/design",
         "./skills/fixing-flaky-tests",
-        "./skills/writer"
+        "./skills/writer",
+        "./skills/strategy-writer",
+        "./skills/managing-databases"
       ],
       "agents": [
         "./agents/code-reviewer.md",
         "./agents/haiku.md",
-        "./agents/log-reader.md"
+        "./agents/log-reader.md",
+        "./agents/devils-advocate.md"
       ],
       "hooks": "./hooks/hooks.json"
     },

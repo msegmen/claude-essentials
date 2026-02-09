@@ -5,35 +5,27 @@ description: Executes implementation plans with smart task grouping. Groups rela
 
 # Executing Plans
 
-**Core principle:** Group related tasks to share agent context. One agent per subsystem, groups run in parallel.
+**You are an orchestrator.** Spawn and coordinate sub-agents to do the actual implementation. Group related tasks by subsystem (e.g., one agent for API routes, another for tests) rather than spawning per-task. Each agent re-investigates the codebase, so fewer agents with broader scope = faster execution.
 
-## Why Grouping Matters
+## 1. Setup
 
-Without grouping:
-```
-Task 1 (auth/login)  → Agent 1 [explores codebase, reads auth/]
-Task 2 (auth/logout) → Agent 2 [explores codebase, reads auth/ again]
-```
+**Create a branch** for the work unless trivial. Consider git worktrees for isolated environments.
 
-With grouping:
-```
-Tasks 1-2 (auth/*)   → Agent 1 [explores once, executes both]
-```
+**Clarify ambiguity upfront:** If the plan has unclear requirements or meaningful tradeoffs, use `AskUserQuestion` before starting. Present options with descriptions explaining the tradeoffs. Use `multiSelect: true` for independent features that can be combined; use single-select for mutually exclusive choices. Don't guess when the user can clarify in 10 seconds.
 
-## Execution Flow
+**Track progress with tasks:** Use `TaskCreate` to create tasks for each major work item from the plan. Update status with `TaskUpdate` as work progresses (`in_progress` when starting, `completed` when done). This makes execution visible to the user and persists across context compactions.
 
-```
-- [ ] Load plan file
-- [ ] Group tasks by subsystem
-- [ ] Dispatch agents for independent groups in parallel
-- [ ] Update plan file (mark IN_PROGRESS)
-- [ ] Wait, dispatch dependent groups
-- [ ] Run verification (tests, build, lint)
-- [ ] Dispatch code-reviewer agent
-- [ ] Mark plan COMPLETED
-```
+## 2. Group Tasks by Subsystem
 
-## Grouping Rules
+Group related tasks to share agent context. One agent per subsystem, groups run in parallel.
+
+**Why grouping matters:**
+```
+Without: Task 1 (auth/login) → Agent 1 [explores auth/]
+         Task 2 (auth/logout) → Agent 2 [explores auth/ again]
+
+With:    Tasks 1-2 (auth/*) → Agent 1 [explores once, executes both]
+```
 
 | Signal | Group together |
 |--------|----------------|
@@ -42,8 +34,6 @@ Tasks 1-2 (auth/*)   → Agent 1 [explores once, executes both]
 | Plan sections | Tasks under same `##` heading |
 
 **Limits:** 3-4 tasks max per group. Split if larger.
-
-## Parallel vs Sequential
 
 **Parallel:** Groups touch different subsystems
 ```
@@ -56,7 +46,9 @@ Group B: src/billing/* ─┘
 Group A: Create shared types → Group B: Use those types
 ```
 
-## Group Dispatch
+## 3. Execute
+
+Dispatch sub-agents to complete task groups. Monitor progress and handle issues.
 
 ```
 Task tool (general-purpose):
@@ -70,23 +62,49 @@ Task tool (general-purpose):
     Commit after each task. Report: files changed, test results
 ```
 
-## Progress Tracking
+**Architectural fit:** Changes should integrate cleanly with existing patterns. If a change feels like it's fighting the architecture, that's a signal to refactor first rather than bolt something on. Don't reinvent wheels when battle-tested libraries exist, but don't reach for a dependency for trivial things either (no lodash just for `_.map`). The goal is zero tech debt, not "ship now, fix later."
 
-1. Set plan status to IN_PROGRESS when starting
-2. Check off `[x]` each task as completed
-3. Set status to COMPLETED when all pass verification
-
-## Auto-Recovery
-
+**Auto-recovery:**
 1. Agent attempts to fix failures (has context)
-2. If can't fix, report failure
-3. Dispatch fix agent with error output
+2. If can't fix, report failure with error output
+3. Dispatch fix agent with context
 4. Same error twice → stop and ask user
 
-## Final Verification
+## 4. Verify
 
-1. Run full test suite
-2. Run build
-3. Dispatch `ce:code-reviewer`
-4. Fix issues found
-5. Mark COMPLETED
+All four checks must pass before marking complete:
+
+1. **Code review:** Use `ce:code-reviewer` to review all changes. Fix issues before proceeding. Poor DX/UX is a bug, treat it the same as a runtime error.
+
+2. **Automated tests:** Run the full test suite. All tests must pass.
+
+3. **Manual verification:** Automated tests aren't sufficient. Actually exercise the changes:
+   - **API changes:** Curl endpoints with realistic payloads
+   - **External integrations:** Test against real services to catch rate limiting, format drift, bot detection
+   - **CLI changes:** Run actual commands, verify output
+   - **Parser changes:** Feed real data, not just fixtures
+
+4. **DX quality:** During manual testing, watch for friction:
+   - Confusing error messages
+   - Noisy output (telemetry spam, verbose logging)
+   - Inconsistent behavior across similar endpoints
+   - Rough edges that technically work but feel bad
+
+   Fix DX issues inline or document for follow-up. Don't ship friction.
+
+## 5. Commit
+
+After verification passes, commit only the changes related to this plan:
+
+1. Run `git status` to see all changes
+2. **Stage files by name, not with `git add -A` or `git add .`** - only stage files you modified as part of this plan
+3. **Leave unrelated changes alone** - if there are pre-existing staged or unstaged changes that aren't part of this work, don't touch them
+4. Write a commit message that summarizes what was implemented, referencing the plan
+
+## 6. Cleanup
+
+After committing:
+- Merge branch to main (if using branches)
+- Remove worktree (if using worktrees)
+- Mark plan file as COMPLETED
+- Move to `./plans/done/` if applicable
