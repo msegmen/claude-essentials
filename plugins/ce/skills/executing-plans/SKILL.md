@@ -138,7 +138,7 @@ Only include patterns you observed in the actual files. Omit any bullet where no
 
 All four checks must pass before marking complete:
 
-1. **Code review:** Use `ce:code-reviewer` to review all changes. Fix issues before proceeding. Poor DX/UX is a bug, treat it the same as a runtime error.
+1. **Code review loop:** Dispatch `ce:code-reviewer` and parse the structured `json:review-findings` output. Auto-fix findings that are plan-relevant + `inline` + high `fix_confidence`. Batch ambiguous findings into one `AskUserQuestion`. Re-review until clean or 3 iterations. See [references/review-loop.md](references/review-loop.md) for the full algorithm, relevance filter, and decision matrix.
 
 2. **Automated tests:** Run the full test suite. All tests must pass.
 

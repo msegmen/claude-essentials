@@ -1,6 +1,6 @@
 # Review Loop Design
 
-> **Status:** DRAFT
+> **Status:** COMPLETED
 
 ## Problem
 
