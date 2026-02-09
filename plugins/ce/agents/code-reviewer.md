@@ -77,7 +77,21 @@ You are an expert code reviewer conducting comprehensive pull request reviews. Y
 
 ## Output Format
 
-Produce a single fenced code block tagged `json:review-findings`. No markdown summary, no duplicate output. The orchestrator renders human-readable output from this structured data.
+> **Contract:** This output schema is consumed programmatically by `ce:executing-plans` (see `skills/executing-plans/references/review-loop.md`). Changes to field names, types, or enum values require coordinating both files.
+
+Your entire response must be exactly one `json:review-findings` fenced code block. No text before it, no text after it. Do all analysis internally. The orchestrator renders human-readable output from this structured data.
+
+If the review finds no issues, produce the block with an empty findings array:
+
+````
+```json:review-findings
+{
+  "summary": { "files_changed": 3, "lines_added": 40, "lines_removed": 10, "change_type": "feature", "scope": "Add input sanitization" },
+  "findings": [],
+  "verdict": { "decision": "approve", "reason": "Code is clean, well-tested, and follows project conventions" }
+}
+```
+````
 
 ````
 ```json:review-findings

@@ -11,7 +11,7 @@ The orchestrator only auto-fixes findings that are relevant to this plan AND saf
 | Yes | `inline` | `high` | Auto-fix |
 | Yes | `inline` | `medium` | Ask user |
 | Yes | `localized` | `high` | Ask user |
-| Yes | `localized` / `cross-file` | any | Ask user |
+| Yes | `localized` / `cross-file` | `medium` or `high` | Ask user |
 | Yes | any | `low` | Skip, log to summary |
 | No | any | any | Skip, log to summary |
 
@@ -40,6 +40,7 @@ A finding is relevant if the code it flags was touched by this plan. Check in or
 iteration = 0
 skipped = []
 user_resolved = []
+previous_actionable = []
 review_scope = "full"  // first pass reviews all plan changes
 
 while iteration < 3:
@@ -57,12 +58,18 @@ while iteration < 3:
     if new_actionable is empty → CLEAN, break
 
     // convergence check: same findings as last iteration = exit
-    if new_actionable == previous_actionable → break
+    // compare by file + line + finding title (tolerates LLM rephrasing)
+    if new_actionable matches previous_actionable by (file, line, finding) → break
 
     auto_fix = [f for f in new_actionable
                 if f.fix_type == "inline" and f.fix_confidence == "high"]
     ask_user = [f for f in new_actionable
                 if f not in auto_fix and f.issue_confidence != "low"]
+
+    // if nothing to fix or ask about, remaining items are low-confidence skips
+    if auto_fix is empty AND ask_user is empty:
+        skipped.extend(new_actionable)
+        break
 
     if auto_fix is not empty:
         // batch same-file fixes into one agent
@@ -97,8 +104,8 @@ if iteration == 3 AND still has findings:
 Batch all ambiguous findings into one `AskUserQuestion`. Don't ask per-finding questions.
 
 ```
-The reviewer flagged these items in the plan's changes.
-For each, choose an action:
+The reviewer found N issues. X were auto-fixed (inline, high confidence).
+The remaining Y need your input:
 
 1. **Missing null check on user input** (src/auth/login.ts:45)
    critical | fix_confidence: medium

@@ -130,7 +130,7 @@ The orchestrator only auto-fixes findings that are relevant to this plan AND saf
 | Yes | `inline` | `high` | Auto-fix |
 | Yes | `inline` | `medium` | Ask user |
 | Yes | `localized` | `high` | Ask user |
-| Yes | `localized`/`cross-file` | any | Ask user |
+| Yes | `localized`/`cross-file` | `medium` or `high` | Ask user |
 | Yes | any | `low` | Skip, log to summary |
 | No | any | any | Skip, log to summary |
 
