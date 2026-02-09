@@ -274,6 +274,8 @@ source_files: [src/auth/login.ts, src/auth/types.ts]
 
 Expert context is injected into `general-purpose` Task dispatches via `<domain-expert-context>` XML tags. Code conventions from the expert override task instructions, but execution mechanics (commit strategy, reporting format) defer to the dispatch template. Plans without expert infrastructure execute normally (backward compatible).
 
+- **Self-Improvement:** After plan execution, experts that were used during dispatch get targeted updates based on `git diff` (new libraries, changed patterns, structural shifts). This closes the Act-Learn-Reuse loop so experts improve with each execution cycle rather than going stale between `/ce:init` runs. Ephemeral experts can be promoted to persistent ones when a domain reaches sufficient maturity (5+ files with clear conventions).
+
 ### Notification Hook
 
 The `ce` plugin includes a Notification hook that triggers alerts when Claude needs user input:

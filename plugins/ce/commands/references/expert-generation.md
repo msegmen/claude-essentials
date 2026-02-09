@@ -143,6 +143,29 @@ Will create:
       └── testing-expert.md       # Jest/Vitest patterns
 ```
 
+## Self-Improvement After Execution
+
+Experts improve through an Act-Learn-Reuse cycle during plan execution (see `ce:executing-plans` step 6). After each plan completes, the orchestrator compares `git diff` output against the expert's conventions and makes targeted updates when drift is detected.
+
+**What triggers an update:**
+- New libraries imported that the expert doesn't mention
+- Changed naming or error handling patterns
+- New test patterns or structural reorganization
+- 3+ files modified in the expert's domain
+
+**What doesn't trigger an update:**
+- Fewer than 3 files changed in the domain
+- Expert was updated less than 24 hours ago
+- Changes follow existing conventions (no drift)
+
+**Update rules:**
+- Patch, don't regenerate. Edit specific convention bullets and swap stale code snippets.
+- Stay within 400-600 words. If an update would exceed the ceiling, apply the cutting priority: drop second code example first, then boundary details, then less-critical convention bullets.
+- Bump `generated_at` and `source_files` in frontmatter.
+- Commit expert updates separately from feature work.
+
+**Ephemeral-to-persistent promotion:** If `ce:executing-plans` generated an ephemeral expert for a domain that now has 5+ files with clear conventions, promote it to a persistent expert using the full template above.
+
 ## `--force` Behavior
 
 When `/ce:init --force` is used, regenerate all experts without confirmation.

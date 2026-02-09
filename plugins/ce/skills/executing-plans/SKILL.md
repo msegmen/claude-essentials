@@ -165,9 +165,35 @@ After verification passes, commit only the changes related to this plan:
 3. **Leave unrelated changes alone** - if there are pre-existing staged or unstaged changes that aren't part of this work, don't touch them
 4. Write a commit message that summarizes what was implemented, referencing the plan
 
-## 6. Cleanup
+## 6. Update Experts
 
-After committing:
+After committing, check whether persistent experts used during dispatch need updating. This closes the Act-Learn-Reuse loop: experts improve from each execution cycle rather than going stale.
+
+**When to update:** Only when ALL of these are true:
+- A persistent expert from `.claude/experts/` was matched during dispatch
+- The plan modified 3+ files in that expert's domain
+- The expert's `generated_at` is older than 24 hours
+
+**How to update:**
+
+*Step 1: Diff.* Run `git diff HEAD~1 -- <domain-path>` to see what changed in this plan.
+
+*Step 2: Compare.* Read the expert file and the diff. Look for convention drift:
+- New libraries imported that the expert doesn't mention
+- Changed naming patterns (e.g., switched from camelCase to snake_case)
+- New error handling style (e.g., added Result types)
+- New test patterns (e.g., switched from mocks to integration tests)
+- Structural changes (e.g., new subdirectories)
+
+*Step 3: Patch or skip.* If drift is found, make targeted edits to the expert file. Don't regenerate from scratch. Update the relevant convention bullets, swap code snippets if the old ones are now unrepresentative, and bump `generated_at` and `source_files` in frontmatter. Stay within 400-600 words. If no meaningful drift, skip.
+
+*Step 4: Commit separately.* Expert updates get their own commit: `chore: update <domain>-expert after <plan-name>`. Keep feature work and expert maintenance in separate commits.
+
+**Ephemeral promotion:** If an ephemeral expert was generated during dispatch and the domain now has 5+ files with clear conventions, promote it to a persistent expert in `.claude/experts/`. Use the full expert template from the init reference, not the ephemeral summary format.
+
+## 7. Cleanup
+
+After committing (including any expert updates from step 6):
 - Merge branch to main (if using branches)
 - Remove worktree (if using worktrees)
 - Mark plan file as COMPLETED
