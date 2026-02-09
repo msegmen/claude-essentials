@@ -97,27 +97,15 @@ fi
 # 6. Output Warnings
 # ============================================================
 if [[ ${#WARNINGS[@]} -gt 0 ]]; then
-    OUTPUT_TEXT="## ACFS Session Completion Warnings
-
-"
+    # Output warnings to stderr (Stop hooks don't support hookSpecificOutput)
+    echo "" >&2
+    echo "## ACFS Session Completion Warnings" >&2
+    echo "" >&2
     for warning in "${WARNINGS[@]}"; do
-        OUTPUT_TEXT+="- $warning
-"
+        echo "- $warning" >&2
     done
-    OUTPUT_TEXT+="
-**Recommendation:** Run '/acfs:complete' to properly close this session with all quality gates.
-"
-
-    json_content=$(printf '%s' "$OUTPUT_TEXT" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read())[1:-1])')
-
-    cat <<EOF
-{
-  "hookSpecificOutput": {
-    "hookEventName": "Stop",
-    "additionalContext": "${json_content}"
-  }
-}
-EOF
+    echo "" >&2
+    echo "**Recommendation:** Run '/acfs:complete' to properly close this session with all quality gates." >&2
 fi
 
 exit 0
